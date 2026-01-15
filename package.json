@@ -1,0 +1,14 @@
+{
+  "name": "divide-bills-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun --filter \"*\" dev",
+    "build": "bun --filter \"*\" build",
+    "test": "bun --filter \"*\" test",
+    "lint": "bun --filter \"*\" lint",
+    "format": "bun --filter \"*\" format"
+  }
+}
