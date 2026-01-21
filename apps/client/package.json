@@ -6,7 +6,9 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"deploy": "bun run build && wrangler deploy --env=production",
+		"deploy": "bun run build && wrangler deploy",
+		"deploy:staging": "bun run build && wrangler deploy --env=staging",
+		"deploy:production": "bun run build && wrangler deploy --env=production",
 		"preview": "bun run build && vite preview",
 		"cf-typegen": "wrangler types",
 		"lint": "biome lint .",

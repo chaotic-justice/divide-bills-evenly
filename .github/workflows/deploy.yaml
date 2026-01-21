@@ -1,0 +1,182 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [master, develop]
+    paths:
+      - 'apps/server/**'
+      - 'apps/client/**'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'apps/server/**'
+      - 'apps/client/**'
+
+jobs:
+  server-build:
+    if: github.event_name == 'push' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun run build:local
+
+      - name: Deploy to Cloudflare Workers
+        run: bun run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  server-deploy-staging:
+    if: github.ref == 'refs/heads/master'
+    needs: server-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Workers (Staging)
+        run: bun run deploy:staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  server-deploy-production:
+    if: github.ref == 'refs/heads/master'
+    needs: server-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Workers (Production)
+        run: bun run deploy:production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Health check
+        run: |
+          sleep 5
+          curl -f https://coins-computer-prod.simpler-times.workers.dev/health || exit 1
+
+  client-build:
+    if: github.event_name == 'push' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/client
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Type check
+        run: bunx tsc --noEmit
+
+      - name: Build
+        run: bun run build
+
+      - name: Deploy to Cloudflare Workers
+        run: bun run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  client-deploy-staging:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+    needs: client-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/client
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Workers (Staging)
+        run: bun run deploy:staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  client-deploy-production:
+    if: github.ref == 'refs/heads/master'
+    needs: client-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/client
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy to Cloudflare Workers (Production)
+        run: bun run deploy:production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
