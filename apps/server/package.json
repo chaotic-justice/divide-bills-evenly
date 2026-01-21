@@ -1,0 +1,32 @@
+{
+	"name": "coins-computer",
+	"version": "1.0.50",
+	"type": "module",
+	"scripts": {
+		"lint": "biome lint ./src",
+		"format": "biome format --write ./src",
+		"format:check": "biome format ./src",
+		"lint:fix": "biome lint --fix ./src",
+		"check": "biome check --apply ./src",
+		"check:ci": "biome ci ./src",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun run --watch src/index.ts",
+		"dev:worker": "wrangler dev",
+		"build": "wrangler deploy --dry-run --outdir=dist",
+		"build:local": "bun build ./src/index.ts --outdir ./dist --target node",
+		"deploy": "wrangler deploy",
+		"deploy:staging": "wrangler deploy --env=staging",
+		"deploy:production": "wrangler deploy --env=production"
+	},
+	"dependencies": {
+		"@elysiajs/cors": "^1.4.0",
+		"@elysiajs/openapi": "^1.4.11",
+		"elysia": "latest"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.5",
+		"bun-types": "latest",
+		"wrangler": "^4.53.0"
+	},
+	"module": "src/index.js"
+}
