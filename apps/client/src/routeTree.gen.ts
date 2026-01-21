@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as Version2RouteImport } from './routes/version2'
 import { Route as MeasureRouteImport } from './routes/measure'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiUrlhostRouteImport } from './routes/api/urlhost'
 import { Route as ApiBillsPerfectRouteImport } from './routes/api/bills.perfect'
 import { Route as ApiBillsImperfectRouteImport } from './routes/api/bills.imperfect'
 
@@ -31,11 +30,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiUrlhostRoute = ApiUrlhostRouteImport.update({
-  id: '/api/urlhost',
-  path: '/api/urlhost',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiBillsPerfectRoute = ApiBillsPerfectRouteImport.update({
   id: '/api/bills/perfect',
   path: '/api/bills/perfect',
@@ -51,7 +45,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
   '/version2': typeof Version2Route
-  '/api/urlhost': typeof ApiUrlhostRoute
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
@@ -59,7 +52,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
   '/version2': typeof Version2Route
-  '/api/urlhost': typeof ApiUrlhostRoute
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
@@ -68,7 +60,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
   '/version2': typeof Version2Route
-  '/api/urlhost': typeof ApiUrlhostRoute
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
@@ -78,7 +69,6 @@ export interface FileRouteTypes {
     | '/'
     | '/measure'
     | '/version2'
-    | '/api/urlhost'
     | '/api/bills/imperfect'
     | '/api/bills/perfect'
   fileRoutesByTo: FileRoutesByTo
@@ -86,7 +76,6 @@ export interface FileRouteTypes {
     | '/'
     | '/measure'
     | '/version2'
-    | '/api/urlhost'
     | '/api/bills/imperfect'
     | '/api/bills/perfect'
   id:
@@ -94,7 +83,6 @@ export interface FileRouteTypes {
     | '/'
     | '/measure'
     | '/version2'
-    | '/api/urlhost'
     | '/api/bills/imperfect'
     | '/api/bills/perfect'
   fileRoutesById: FileRoutesById
@@ -103,7 +91,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MeasureRoute: typeof MeasureRoute
   Version2Route: typeof Version2Route
-  ApiUrlhostRoute: typeof ApiUrlhostRoute
   ApiBillsImperfectRoute: typeof ApiBillsImperfectRoute
   ApiBillsPerfectRoute: typeof ApiBillsPerfectRoute
 }
@@ -131,13 +118,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/urlhost': {
-      id: '/api/urlhost'
-      path: '/api/urlhost'
-      fullPath: '/api/urlhost'
-      preLoaderRoute: typeof ApiUrlhostRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/bills/perfect': {
       id: '/api/bills/perfect'
       path: '/api/bills/perfect'
@@ -159,7 +139,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MeasureRoute: MeasureRoute,
   Version2Route: Version2Route,
-  ApiUrlhostRoute: ApiUrlhostRoute,
   ApiBillsImperfectRoute: ApiBillsImperfectRoute,
   ApiBillsPerfectRoute: ApiBillsPerfectRoute,
 }

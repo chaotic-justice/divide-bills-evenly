@@ -7,14 +7,14 @@ on:
       - 'apps/server/**'
       - 'apps/client/**'
   pull_request:
-    branches: [master]
+    branches: [master, develop]
     paths:
       - 'apps/server/**'
       - 'apps/client/**'
 
 jobs:
   server-build:
-    if: github.event_name == 'push' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,14 +35,8 @@ jobs:
       - name: Build
         run: bun run build:local
 
-      - name: Deploy to Cloudflare Workers
-        run: bun run deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
   server-deploy-staging:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
     needs: server-build
     runs-on: ubuntu-latest
     defaults:
@@ -99,7 +93,7 @@ jobs:
           curl -f https://coins-computer-prod.simpler-times.workers.dev/health || exit 1
 
   client-build:
-    if: github.event_name == 'push' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -123,14 +117,8 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Deploy to Cloudflare Workers
-        run: bun run deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
   client-deploy-staging:
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
     needs: client-build
     runs-on: ubuntu-latest
     defaults:

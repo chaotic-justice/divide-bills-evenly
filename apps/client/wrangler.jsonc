@@ -9,16 +9,10 @@
 	},
 	"env": {
 		"staging": {
-			"name": "dividing-duluth-dev",
-			"vars": {
-				"API_HOST": "https://coins-computer-prod.simpler-times.workers.dev"
-			}
+			"name": "dividing-bills-evenly-dev"
 		},
 		"production": {
-			"name": "dividing-duluth-prod",
-			"vars": {
-				"API_HOST": "https://coins-computer-prod.simpler-times.workers.dev"
-			}
+			"name": "dividing-bills-evenly-prod"
 		}
 	}
 }
