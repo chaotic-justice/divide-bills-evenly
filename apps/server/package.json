@@ -2,6 +2,10 @@
 	"name": "coins-computer",
 	"version": "1.0.50",
 	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./types": "./src/index.ts"
+	},
 	"scripts": {
 		"lint": "biome lint ./src",
 		"format": "biome format --write ./src",

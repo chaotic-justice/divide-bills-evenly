@@ -1,8 +1,6 @@
 import type { BillCounterFormData } from "@/schemas/billCounter";
 import { createFileRoute } from "@tanstack/react-router";
-import { env } from "cloudflare:workers";
-
-const BASE_URL = env.VITE_API_URL;
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/api/bills/perfect")({
 	server: {
@@ -10,22 +8,25 @@ export const Route = createFileRoute("/api/bills/perfect")({
 			POST: async ({ request }) => {
 				const data = (await request.json()) as BillCounterFormData;
 				try {
-					const response = await fetch(`${BASE_URL}/bills/perfect`, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(data),
-					});
-					const res = await response.json();
+					const response = await api.bills.perfect.post(data);
+					
+					if (response.error) {
+						return new Response(
+							JSON.stringify({ error: response.error }),
+							{
+								status: response.status || 500,
+								headers: { "Content-Type": "application/json" },
+							},
+						);
+					}
 
-					return new Response(JSON.stringify(res), {
+					return new Response(JSON.stringify(response.data), {
 						status: 200,
 						headers: { "Content-Type": "application/json" },
 					});
 				} catch (error) {
 					return new Response(
-						JSON.stringify({ error: "Failed to fetch" + error }),
+						JSON.stringify({ error: "Failed to fetch: " + error }),
 						{
 							status: 500,
 							headers: { "Content-Type": "application/json" },
