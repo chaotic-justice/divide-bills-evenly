@@ -12,6 +12,9 @@ on:
       - 'apps/server/**'
       - 'apps/client/**'
 
+env:
+  BUN_VERSION: 'latest'
+
 jobs:
   server-build:
     if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
@@ -21,16 +24,25 @@ jobs:
         working-directory: apps/server
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/server/node_modules
+          key: server-${{ runner.os }}-${{ hashFiles('apps/server/bun.lock') }}
+          restore-keys: |
+            server-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Build
         run: bun run build:local
@@ -44,16 +56,23 @@ jobs:
         working-directory: apps/server
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/server/node_modules
+          key: server-${{ runner.os }}-${{ hashFiles('apps/server/bun.lock') }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Deploy to Cloudflare Workers (Staging)
         run: bun run deploy:staging
@@ -70,16 +89,23 @@ jobs:
         working-directory: apps/server
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/server/node_modules
+          key: server-${{ runner.os }}-${{ hashFiles('apps/server/bun.lock') }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Deploy to Cloudflare Workers (Production)
         run: bun run deploy:production
@@ -100,16 +126,25 @@ jobs:
         working-directory: apps/client
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/client/node_modules
+          key: client-${{ runner.os }}-${{ hashFiles('apps/client/bun.lock') }}
+          restore-keys: |
+            client-${{ runner.os }}-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Type check
         run: bunx tsc --noEmit
@@ -126,16 +161,23 @@ jobs:
         working-directory: apps/client
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/client/node_modules
+          key: client-${{ runner.os }}-${{ hashFiles('apps/client/bun.lock') }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Deploy to Cloudflare Workers (Staging)
         run: bun run deploy:staging
@@ -152,16 +194,23 @@ jobs:
         working-directory: apps/client
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 'latest'
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            apps/client/node_modules
+          key: client-${{ runner.os }}-${{ hashFiles('apps/client/bun.lock') }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Deploy to Cloudflare Workers (Production)
         run: bun run deploy:production
