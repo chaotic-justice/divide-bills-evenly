@@ -1,14 +1,19 @@
 {
-  "name": "divide-bills-monorepo",
-  "private": true,
-  "workspaces": [
-    "apps/*"
-  ],
-  "scripts": {
-    "dev": "bun --filter \"*\" dev",
-    "build": "bun --filter \"*\" build",
-    "test": "bun --filter \"*\" test",
-    "lint": "bun --filter \"*\" lint",
-    "format": "bun --filter \"*\" format"
-  }
+	"name": "divide-bills-monorepo",
+	"private": true,
+	"workspaces": [
+		"apps/*"
+	],
+	"scripts": {
+		"dev": "bun --filter \"*\" dev",
+		"build": "bun --filter \"*\" build",
+		"test": "bun --filter \"*\" test",
+		"lint": "bun --filter \"*\" lint",
+		"format": "bun --filter \"*\" format"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.5",
+		"lefthook": "^2.0.15",
+		"wrangler": "4.59.2"
+	}
 }

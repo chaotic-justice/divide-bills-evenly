@@ -9,17 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as Version2RouteImport } from './routes/version2'
 import { Route as MeasureRouteImport } from './routes/measure'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiBillsPerfectRouteImport } from './routes/api/bills.perfect'
 import { Route as ApiBillsImperfectRouteImport } from './routes/api/bills.imperfect'
 
-const Version2Route = Version2RouteImport.update({
-  id: '/version2',
-  path: '/version2',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MeasureRoute = MeasureRouteImport.update({
   id: '/measure',
   path: '/measure',
@@ -44,14 +38,12 @@ const ApiBillsImperfectRoute = ApiBillsImperfectRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
-  '/version2': typeof Version2Route
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
-  '/version2': typeof Version2Route
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
@@ -59,30 +51,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/measure': typeof MeasureRoute
-  '/version2': typeof Version2Route
   '/api/bills/imperfect': typeof ApiBillsImperfectRoute
   '/api/bills/perfect': typeof ApiBillsPerfectRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/measure'
-    | '/version2'
-    | '/api/bills/imperfect'
-    | '/api/bills/perfect'
+  fullPaths: '/' | '/measure' | '/api/bills/imperfect' | '/api/bills/perfect'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/measure'
-    | '/version2'
-    | '/api/bills/imperfect'
-    | '/api/bills/perfect'
+  to: '/' | '/measure' | '/api/bills/imperfect' | '/api/bills/perfect'
   id:
     | '__root__'
     | '/'
     | '/measure'
-    | '/version2'
     | '/api/bills/imperfect'
     | '/api/bills/perfect'
   fileRoutesById: FileRoutesById
@@ -90,20 +70,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MeasureRoute: typeof MeasureRoute
-  Version2Route: typeof Version2Route
   ApiBillsImperfectRoute: typeof ApiBillsImperfectRoute
   ApiBillsPerfectRoute: typeof ApiBillsPerfectRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/version2': {
-      id: '/version2'
-      path: '/version2'
-      fullPath: '/version2'
-      preLoaderRoute: typeof Version2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/measure': {
       id: '/measure'
       path: '/measure'
@@ -138,7 +110,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MeasureRoute: MeasureRoute,
-  Version2Route: Version2Route,
   ApiBillsImperfectRoute: ApiBillsImperfectRoute,
   ApiBillsPerfectRoute: ApiBillsPerfectRoute,
 }

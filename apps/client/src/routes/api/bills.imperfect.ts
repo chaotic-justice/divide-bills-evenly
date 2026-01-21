@@ -9,15 +9,12 @@ export const Route = createFileRoute("/api/bills/imperfect")({
 				const data = (await request.json()) as BillCounterFormData;
 				try {
 					const response = await api.bills.imperfect.post(data);
-					
+
 					if (response.error) {
-						return new Response(
-							JSON.stringify({ error: response.error }),
-							{
-								status: response.status || 500,
-								headers: { "Content-Type": "application/json" },
-							},
-						);
+						return new Response(JSON.stringify({ error: response.error }), {
+							status: response.status || 500,
+							headers: { "Content-Type": "application/json" },
+						});
 					}
 
 					return new Response(JSON.stringify(response.data), {

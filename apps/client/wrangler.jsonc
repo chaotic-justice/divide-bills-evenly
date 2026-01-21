@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "dividing-bills-evenly",
+	"name": "dividing-bills-evenly-client",
 	"compatibility_date": "2025-12-10",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"main": "@tanstack/react-start/server-entry",
@@ -9,10 +9,10 @@
 	},
 	"env": {
 		"staging": {
-			"name": "dividing-bills-evenly-dev"
+			"name": "dividing-bills-evenly-client-staging"
 		},
 		"production": {
-			"name": "dividing-bills-evenly-prod"
+			"name": "dividing-bills-evenly-client-production"
 		}
 	}
 }

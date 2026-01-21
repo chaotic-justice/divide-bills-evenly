@@ -45,104 +45,104 @@ export function countBillsInStack(stack: number[]): BillCount {
  * This handles edge cases better than greedy algorithm
  */
 export function canDistributeBillsEvenlyDP(
-		bills: BillCount,
-		// optional amount to subtract from total before distributing (e.g., targetAmount)
-		subtractAmount = 0,
-		// optional allowed denominations for subtraction (whitelist); if provided, only these denoms can be used for subtraction
-		allowedDenominations?: AllowedDenominations,
-	): DistributionResult {
-		const { five, ten, twenty, fifty, hundred } = bills;
+	bills: BillCount,
+	// optional amount to subtract from total before distributing (e.g., targetAmount)
+	subtractAmount = 0,
+	// optional allowed denominations for subtraction (whitelist); if provided, only these denoms can be used for subtraction
+	allowedDenominations?: AllowedDenominations,
+): DistributionResult {
+	const { five, ten, twenty, fifty, hundred } = bills;
 
-		// Calculate original total amount
-		const originalTotal =
-			five * 5 + ten * 10 + twenty * 20 + fifty * 50 + hundred * 100;
+	// Calculate original total amount
+	const originalTotal =
+		five * 5 + ten * 10 + twenty * 20 + fifty * 50 + hundred * 100;
 
-		// Create list of all bills
-		const allBills: number[] = [];
-		allBills.push(...Array(five).fill(5));
-		allBills.push(...Array(ten).fill(10));
-		allBills.push(...Array(twenty).fill(20));
-		allBills.push(...Array(fifty).fill(50));
-		allBills.push(...Array(hundred).fill(100));
+	// Create list of all bills
+	const allBills: number[] = [];
+	allBills.push(...Array(five).fill(5));
+	allBills.push(...Array(ten).fill(10));
+	allBills.push(...Array(twenty).fill(20));
+	allBills.push(...Array(fifty).fill(50));
+	allBills.push(...Array(hundred).fill(100));
 
-		// Sort in descending order for better performance
-		allBills.sort((a, b) => b - a);
+	// Sort in descending order for better performance
+	allBills.sort((a, b) => b - a);
 
-		const used = new Array(allBills.length).fill(false);
+	const used = new Array(allBills.length).fill(false);
 
-		// If we need to subtract an amount first, try to find a subset of bills that sums to subtractAmount
-		if (subtractAmount > 0) {
-			// Filter bills to only include allowed denominations for subtraction
-			const allowedIndices = allBills
-				.map((denom, idx) => {
-					const denomStr = denom.toString() as keyof AllowedDenominations;
-					const isAllowed = allowedDenominations?.[denomStr] ?? true; // default to true if allowedDenominations not provided
-					return isAllowed ? idx : -1;
-				})
-				.filter((idx) => idx !== -1);
+	// If we need to subtract an amount first, try to find a subset of bills that sums to subtractAmount
+	if (subtractAmount > 0) {
+		// Filter bills to only include allowed denominations for subtraction
+		const allowedIndices = allBills
+			.map((denom, idx) => {
+				const denomStr = denom.toString() as keyof AllowedDenominations;
+				const isAllowed = allowedDenominations?.[denomStr] ?? true; // default to true if allowedDenominations not provided
+				return isAllowed ? idx : -1;
+			})
+			.filter((idx) => idx !== -1);
 
-			const subtractSubset = findSubsetSumWithAllowed(
-				allBills,
-				used,
-				subtractAmount,
-				allowedIndices,
-			);
-			if (!subtractSubset) {
-				return {
-					isDivisibleByThree: false,
-					canBeEvenlyDistributed: false,
-					totalAmount: originalTotal,
-					totalBills: allBills.length,
-					reason: `Cannot subtract $${subtractAmount} with available bills (using only allowed denominations)`,
-				};
-			}
-
-			// mark subtracted bills as used
-			subtractSubset.forEach((idx: number) => {
-				used[idx] = true;
-			});
-		}
-
-		const remainingTotal = originalTotal - subtractAmount;
-
-		// Check divisibility of remaining total
-		if (remainingTotal % 3 !== 0) {
+		const subtractSubset = findSubsetSumWithAllowed(
+			allBills,
+			used,
+			subtractAmount,
+			allowedIndices,
+		);
+		if (!subtractSubset) {
 			return {
 				isDivisibleByThree: false,
 				canBeEvenlyDistributed: false,
-				totalAmount: remainingTotal,
-				totalBills: allBills.length - used.filter(Boolean).length,
-				reason: `Remaining total $${remainingTotal} is not divisible by 3`,
+				totalAmount: originalTotal,
+				totalBills: allBills.length,
+				reason: `Cannot subtract $${subtractAmount} with available bills (using only allowed denominations)`,
 			};
 		}
 
-		const target = remainingTotal / 3;
+		// mark subtracted bills as used
+		subtractSubset.forEach((idx: number) => {
+			used[idx] = true;
+		});
+	}
 
-		// Try to find 3 subsets from remaining bills that sum to target
-		for (let i = 0; i < 3; i++) {
-			const subset = findSubsetSum(allBills, used, target);
-			if (!subset) {
-				return {
-					isDivisibleByThree: true,
-					canBeEvenlyDistributed: false,
-					totalAmount: remainingTotal,
-					totalBills: allBills.length - used.filter(Boolean).length,
-					reason: `Cannot find stack ${i + 1} with value $${target}`,
-				};
-			}
+	const remainingTotal = originalTotal - subtractAmount;
 
-			subset.forEach((index) => {
-				used[index] = true;
-			});
-		}
-
+	// Check divisibility of remaining total
+	if (remainingTotal % 3 !== 0) {
 		return {
-			isDivisibleByThree: true,
-			canBeEvenlyDistributed: true,
+			isDivisibleByThree: false,
+			canBeEvenlyDistributed: false,
 			totalAmount: remainingTotal,
 			totalBills: allBills.length - used.filter(Boolean).length,
+			reason: `Remaining total $${remainingTotal} is not divisible by 3`,
 		};
 	}
+
+	const target = remainingTotal / 3;
+
+	// Try to find 3 subsets from remaining bills that sum to target
+	for (let i = 0; i < 3; i++) {
+		const subset = findSubsetSum(allBills, used, target);
+		if (!subset) {
+			return {
+				isDivisibleByThree: true,
+				canBeEvenlyDistributed: false,
+				totalAmount: remainingTotal,
+				totalBills: allBills.length - used.filter(Boolean).length,
+				reason: `Cannot find stack ${i + 1} with value $${target}`,
+			};
+		}
+
+		subset.forEach((index) => {
+			used[index] = true;
+		});
+	}
+
+	return {
+		isDivisibleByThree: true,
+		canBeEvenlyDistributed: true,
+		totalAmount: remainingTotal,
+		totalBills: allBills.length - used.filter(Boolean).length,
+	};
+}
 
 /**
  * Helper for DP solution: find subset that sums to target

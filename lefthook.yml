@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{js,ts,jsx,tsx}"
+      exclude:
+        - "**/worker-configuration.d.ts"
+        - "!apps/client/src/routeTree.gen.ts"
+      run: bun lint {staged_files}
+    format:
+      glob: "*.{js,ts,jsx,tsx}"
+      exclude:
+        - "**/worker-configuration.d.ts"
+        - "!apps/client/src/routeTree.gen.ts"
+      run: bun format {staged_files}

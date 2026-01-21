@@ -1,12 +1,15 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
 	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-	"files": { "ignoreUnknown": false },
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["**"]
+	},
 	"formatter": { "enabled": true, "indentStyle": "tab" },
 	"linter": {
 		"enabled": true,
 		"rules": { "recommended": false },
-		"includes": ["**", "!dist", "**", "!dist"]
+		"includes": ["**", "!dist"]
 	},
 	"javascript": { "formatter": { "quoteStyle": "double" } },
 	"overrides": [
@@ -51,7 +54,7 @@
 						"noCatchAssign": "error",
 						"noClassAssign": "error",
 						"noCompareNegZero": "error",
-						"noConstantBinaryExpressions": "error",
+
 						"noControlCharactersInRegex": "error",
 						"noDebugger": "error",
 						"noDuplicateCase": "error",
@@ -71,7 +74,7 @@
 						"noShadowRestrictedNames": "error",
 						"noSparseArray": "error",
 						"noUnsafeNegation": "error",
-						"noUselessRegexBackrefs": "error",
+
 						"noWith": "error",
 						"useGetterReturn": "error"
 					}
@@ -328,7 +331,7 @@
 						"noCatchAssign": "error",
 						"noClassAssign": "error",
 						"noCompareNegZero": "error",
-						"noConstantBinaryExpressions": "error",
+
 						"noControlCharactersInRegex": "error",
 						"noDebugger": "error",
 						"noDuplicateCase": "error",
@@ -348,7 +351,7 @@
 						"noShadowRestrictedNames": "error",
 						"noSparseArray": "error",
 						"noUnsafeNegation": "error",
-						"noUselessRegexBackrefs": "error",
+
 						"noWith": "error",
 						"useGetterReturn": "error"
 					}
@@ -418,7 +421,6 @@
 						"noExplicitAny": "error",
 						"noExtraNonNullAssertion": "error",
 						"noMisleadingInstantiator": "error",
-						"noTsIgnore": "error",
 						"noUnsafeDeclarationMerging": "error",
 						"useNamespaceKeyword": "error"
 					}
