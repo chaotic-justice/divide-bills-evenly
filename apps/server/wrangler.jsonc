@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "dividing-bills-evenly-server",
+	"name": "pumpkin-tree-server",
 	"main": "src/index.ts",
 	"compatibility_flags": ["nodejs_compat"],
 	"compatibility_date": "2025-12-05",
@@ -43,10 +43,10 @@
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 	"env": {
 		"staging": {
-			"name": "dividing-bills-evenly-server-dev"
+			"name": "pumpkin-tree-server-dev"
 		},
 		"production": {
-			"name": "dividing-bills-evenly-server-prod"
+			"name": "pumpkin-tree-server-prod"
 		}
 	}
 }

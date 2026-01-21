@@ -1,5 +1,5 @@
 {
-	"name": "dividing-bills-evenly-client",
+	"name": "pumpkin-tree-client",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -56,7 +56,7 @@
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.2",
 		"autoprefixer": "^10.4.22",
-		"coins-computer": "workspace:*",
+		"pumpkin-tree-server": "workspace:*",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.24",
 		"globals": "^16.5.0",

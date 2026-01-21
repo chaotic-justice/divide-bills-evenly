@@ -3,13 +3,7 @@ pre-commit:
   commands:
     lint:
       glob: "*.{js,ts,jsx,tsx}"
-      exclude:
-        - "**/worker-configuration.d.ts"
-        - "**/routeTree.gen.ts"
       run: bun lint {staged_files} --verbose
     format:
       glob: "*.{js,ts,jsx,tsx}"
-      exclude:
-        - "**/worker-configuration.d.ts"
-        - "**/routeTree.gen.ts"
       run: bun format {staged_files} && git add {staged_files}

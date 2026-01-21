@@ -3,18 +3,18 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "coins-computer",
-      "dependencies": {
-        "@elysiajs/cors": "^1.4.0",
-        "@elysiajs/openapi": "^1.4.11",
-        "elysia": "latest",
-      },
-      "devDependencies": {
-        "@biomejs/biome": "2.2.5",
-        "bun-types": "latest",
-        "wrangler": "^4.53.0",
-      },
-    },
+					"name": "pumpkin-tree-server",
+					"dependencies": {
+						"@elysiajs/cors": "^1.4.0",
+						"@elysiajs/openapi": "^1.4.11",
+						"elysia": "latest"
+					},
+					"devDependencies": {
+						"@biomejs/biome": "2.2.5",
+						"bun-types": "latest",
+						"wrangler": "^4.53.0"
+					}
+				},
   },
   "packages": {
     "@biomejs/biome": ["@biomejs/biome@2.2.5", "", { "optionalDependencies": { "@biomejs/cli-darwin-arm64": "2.2.5", "@biomejs/cli-darwin-x64": "2.2.5", "@biomejs/cli-linux-arm64": "2.2.5", "@biomejs/cli-linux-arm64-musl": "2.2.5", "@biomejs/cli-linux-x64": "2.2.5", "@biomejs/cli-linux-x64-musl": "2.2.5", "@biomejs/cli-win32-arm64": "2.2.5", "@biomejs/cli-win32-x64": "2.2.5" }, "bin": { "biome": "bin/biome" } }, "sha512-zcIi+163Rc3HtyHbEO7CjeHq8DjQRs40HsGbW6vx2WI0tg8mYQOPouhvHSyEnCBAorfYNnKdR64/IxO7xQ5faw=="],

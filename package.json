@@ -1,5 +1,5 @@
 {
-	"name": "divide-bills-monorepo",
+	"name": "pumpkin-tree-monorepo",
 	"private": true,
 	"workspaces": [
 		"apps/*"

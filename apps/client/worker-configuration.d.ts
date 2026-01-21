@@ -3,7 +3,7 @@
 // Runtime types generated with workerd@1.20251210.0 2025-12-10 nodejs_compat
 declare namespace Cloudflare {
 	interface Env {
-		API_HOST: "https://coins-computer-prod.simpler-times.workers.dev";
+		API_HOST: "https://pumpkin-tree-server-prod.simpler-times.workers.dev";
 		VITE_API_URL: string;
 	}
 }
