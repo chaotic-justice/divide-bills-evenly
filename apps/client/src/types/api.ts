@@ -3,4 +3,4 @@ export type {
 	StackStats,
 	SubtractionCombo,
 	SubtractionStackStats,
-} from "pumpkin-tree-server";
+} from "pumpkin-tree-api";

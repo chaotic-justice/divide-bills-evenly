@@ -116,7 +116,7 @@ jobs:
       # - name: Health check
       #   run: |
       #     sleep 5
-      #     curl -f https://pumpkin-tree-server-prod.simpler-times.workers.dev/health || exit 1
+      #     curl -f https://pumpkin-tree-api-prod.simpler-times.workers.dev/health || exit 1
 
   client-build:
     if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
