@@ -1,32 +1,31 @@
-interface Bills {
-	[key: number]: number;
-}
+type Bills = Record<number, number>;
 
-interface StackStats {
+type StackStats = Readonly<{
 	index: number;
 	value: number;
 	billCount: number;
 	distribution: Bills;
-}
+}>;
 
-interface SubtractionCombo {
+export type SubtractionCombo = Readonly<{
 	newTotal: number;
 	amountSubtracted: number;
 	combination: Bills | null;
 	description: string;
-}
+}>;
 
-interface SubtractionStackStats extends SubtractionCombo {
-	stackStats: StackStats[];
-}
+type SubtractionStackStats = SubtractionCombo &
+	Readonly<{
+		stackStats: StackStats[];
+	}>;
 
-interface BodyInput {
+type BodyInput = Readonly<{
 	"5": number;
 	"10": number;
 	"20": number;
 	"50": number;
 	"100": number;
-}
+}>;
 
 function memoize<Args extends unknown[], Return>(
 	fn: (...args: Args) => Return,

@@ -41,8 +41,8 @@ import { useDebounceCallback } from "usehooks-ts";
 interface ResultsState {
 	showResults: boolean;
 	billsMath: DistributionResult | null;
-	stackStats: StackStats[] | null;
-	subtractionCombos: SubtractionStackStats[] | null;
+	stackStats: readonly StackStats[] | null;
+	subtractionCombos: readonly SubtractionStackStats[] | null;
 	selectedComboIdx: number;
 }
 

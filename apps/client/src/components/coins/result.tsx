@@ -13,9 +13,9 @@ import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface BillCounterResultsProps {
-	stackStats: StackStats[] | null;
+	stackStats: readonly StackStats[] | null;
 	billsMath: DistributionResult | null;
-	subtractionCombos: SubtractionCombo[] | null;
+	subtractionCombos: readonly SubtractionCombo[] | null;
 	selectedComboIdx: number;
 	onSelectedComboChange: (idx: number) => void;
 }

@@ -3,6 +3,12 @@ import { fromTypes, openapi } from "@elysiajs/openapi";
 import { Elysia } from "elysia";
 import { CloudflareAdapter } from "elysia/adapter/cloudflare-worker";
 import { bills } from "./bills";
+export type {
+	Bills,
+	StackStats,
+	SubtractionCombo,
+	SubtractionStackStats,
+} from "./utils/bill-logic";
 
 const ALLOWED_ORIGINS = [
 	"http://localhost:8787",
