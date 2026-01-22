@@ -13,16 +13,10 @@
 	"env": {
 		"staging": {
 			"main": "@tanstack/react-start/server-entry",
-			"vars": {
-				"VITE_API_URL": "https://pumpkin-tree-api-staging.simpler-times.workers.dev"
-			},
 			"name": "pumpkin-tree-client-staging"
 		},
 		"production": {
 			"main": "@tanstack/react-start/server-entry",
-			"vars": {
-				"VITE_API_URL": "https://pumpkin-tree-api-prod.simpler-times.workers.dev"
-			},
 			"name": "pumpkin-tree-client-production"
 		}
 	}

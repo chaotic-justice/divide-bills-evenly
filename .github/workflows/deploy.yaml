@@ -130,10 +130,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      # - name: Health check
-      #   run: |
-      #     sleep 5
-      #     curl -f https://pumpkin-tree-api-prod.simpler-times.workers.dev/health || exit 1
+      - name: Health check
+        run: |
+          sleep 5
+          curl -f https://pumpkin-tree-api-prod.simpler-times.workers.dev/health || exit 1
 
   client-build:
     needs: detect-changes
