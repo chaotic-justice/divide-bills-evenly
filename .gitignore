@@ -142,3 +142,5 @@ vite.config.ts.timestamp-*
 
 .vscode
 .agent
+.opencode
+.shared

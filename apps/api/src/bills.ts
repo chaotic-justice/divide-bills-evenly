@@ -23,12 +23,6 @@ const BillsBase = t.Object({
 export const bills = new Elysia({
 	prefix: "/bills",
 })
-	.onTransform(function log({ body, params, path, request: { method } }) {
-		console.log(`${method} ${path}`, {
-			body,
-			params,
-		});
-	})
 	.guard({
 		body: BillsBase,
 	})

@@ -43,7 +43,7 @@
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 	"env": {
 		"staging": {
-			"name": "pumpkin-tree-server-dev"
+			"name": "pumpkin-tree-server-staging"
 		},
 		"production": {
 			"name": "pumpkin-tree-server-prod"

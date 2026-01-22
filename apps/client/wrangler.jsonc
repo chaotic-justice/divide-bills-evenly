@@ -4,14 +4,23 @@
 	"compatibility_date": "2025-12-10",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"main": "@tanstack/react-start/server-entry",
+	"vars": {
+		"VITE_API_URL": "http://localhost:3000"
+	},
 	"observability": {
 		"enabled": true
 	},
 	"env": {
 		"staging": {
+			"vars": {
+				"VITE_API_URL": "https://pumpkin-tree-server-staging.simpler-times.workers.dev"
+			},
 			"name": "pumpkin-tree-client-staging"
 		},
 		"production": {
+			"vars": {
+				"VITE_API_URL": "https://pumpkin-tree-server-prod.simpler-times.workers.dev"
+			},
 			"name": "pumpkin-tree-client-production"
 		}
 	}
