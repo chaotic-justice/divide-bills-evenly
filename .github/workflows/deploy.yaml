@@ -16,8 +16,25 @@ env:
   BUN_VERSION: 'latest'
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      client: ${{ steps.filter.outputs.client }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'apps/api/**'
+            client:
+              - 'apps/client/**'
+
   server-build:
-    if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    needs: detect-changes
+    if: needs.detect-changes.outputs.api == 'true' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -119,7 +136,8 @@ jobs:
       #     curl -f https://pumpkin-tree-api-prod.simpler-times.workers.dev/health || exit 1
 
   client-build:
-    if: contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
+    needs: detect-changes
+    if: needs.detect-changes.outputs.client == 'true' && contains(toJson(github.event.pusher.commit.message), '[skip ci]') == false
     runs-on: ubuntu-latest
     defaults:
       run:
