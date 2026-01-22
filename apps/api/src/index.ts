@@ -11,9 +11,8 @@ export type {
 } from "./utils/bill-logic";
 
 const ALLOWED_ORIGINS = [
-	"http://localhost:8787",
 	"http://localhost:5173",
-	"https://dividing-bills-in-duluth.simpler-times.workers.dev",
+	"https://pumpkin-tree-client.simpler-times.workers.dev",
 ];
 
 const app = new Elysia({
