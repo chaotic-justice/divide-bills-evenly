@@ -15,10 +15,10 @@ export function Header() {
 	];
 
 	return (
-		<header className="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
-			<nav className="relative z-50 flex items-center justify-between">
+		<header className="px-4 py-10 mx-auto w-full max-w-7xl sm:px-6 lg:px-8">
+			<nav className="relative z-50 flex items-center justify-around">
 				{/* Left section */}
-				<div className="flex items-center flex-1 md:gap-x-12">
+				<div className="flex items-center md:gap-x-12">
 					<Link
 						to="/"
 						className="flex items-center space-x-1"
@@ -43,7 +43,7 @@ export function Header() {
 				</div>
 
 				{/* Center section - Navigation */}
-				<ul className="items-center justify-center flex-1 hidden gap-6 md:flex">
+				<ul className="items-center hidden gap-6 md:flex">
 					{links.map((link) => (
 						<li key={link.label}>
 							<Link
@@ -62,7 +62,7 @@ export function Header() {
 				</ul>
 
 				{/* Right section */}
-				<div className="items-center justify-end flex-1 hidden md:flex gap-x-6">
+				<div className="items-center hidden md:flex gap-x-6">
 					<LanguageSwitcher />
 				</div>
 
@@ -77,7 +77,7 @@ export function Header() {
 						<SquareMenuIcon />
 					</Button>
 					{isMenuOpen && (
-						<div className="absolute top-0 left-0 z-50 w-full">
+						<div className="fixed top-0 inset-x-0 z-50 w-full p-4">
 							<div className="p-5 border rounded shadow-sm bg-background">
 								<div className="flex items-center justify-between mb-4">
 									<div>

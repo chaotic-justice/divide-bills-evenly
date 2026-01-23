@@ -82,7 +82,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body className="min-h-screen font-sans antialiased bg-background">
-				<div className="flex flex-col min-h-screen p-4 md:p-8">
+				<div className="flex flex-col min-h-screen">
 					<Header />
 					<main className="flex-1">{children}</main>
 				</div>
