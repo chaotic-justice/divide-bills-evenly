@@ -3,6 +3,9 @@ pre-commit:
   commands:
     lint:
       glob: "*.{js,ts,jsx,tsx}"
+      exclude:
+        - "*.spec.tsx"
+        - "apps/client/vitest.setup.ts"
       run: bun lint {staged_files} --verbose
     format:
       glob: "*.{js,ts,jsx,tsx}"
