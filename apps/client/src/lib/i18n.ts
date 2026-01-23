@@ -7,7 +7,7 @@ i18n
 	.use(
 		resourcesToBackend(
 			(language: string, _namespace: string) =>
-				import(`../../public/locales/${language}.json`),
+				import(`../locales/${language}.json`),
 		),
 	)
 	.use({
@@ -23,7 +23,9 @@ i18n
 					caches: ["localStorage"],
 				});
 				const lng = detector.detect();
-				if (lng) callback(lng); // Only callback if language is detected
+				callback(lng || "en");
+			} else {
+				callback("en");
 			}
 		},
 		init: () => {
