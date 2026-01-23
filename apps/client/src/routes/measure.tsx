@@ -11,12 +11,14 @@ import {
 } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/measure")({
 	component: Measure,
 });
 
 function Measure() {
+	const { t } = useTranslation();
 	const [inches, setInches] = useState("");
 	const [millimeters, setMillimeters] = useState("");
 
@@ -33,10 +35,10 @@ function Measure() {
 						<Ruler className="w-8 h-8 text-primary-foreground" />
 					</div>
 					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-						Unit Converter
+						{t("measure.title")}
 					</h1>
 					<p className="text-gray-600 dark:text-gray-300">
-						Convert inches to millimeters with precision
+						{t("measure.description")}
 					</p>
 				</div>
 
@@ -44,23 +46,21 @@ function Measure() {
 					<CardHeader className="text-center">
 						<CardTitle className="flex items-center justify-center gap-2 text-xl">
 							<Ruler className="w-5 h-5" />
-							Inches to Millimeters
+							{t("measure.cardTitle")}
 						</CardTitle>
-						<CardDescription>
-							Enter a value in inches to see the conversion
-						</CardDescription>
+						<CardDescription>{t("measure.cardDescription")}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						<div className="space-y-2">
 							<Label htmlFor="inches" className="text-sm font-medium">
-								Inches
+								{t("measure.inches")}
 							</Label>
 							<Input
 								id="inches"
 								type="number"
 								value={inches}
 								onChange={(e) => setInches(e.target.value)}
-								placeholder="e.g., 12.5"
+								placeholder={t("measure.placeholderInches")}
 								className="text-center text-lg"
 								min="0"
 								step="0.01"
@@ -71,7 +71,7 @@ function Measure() {
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
 									<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-										Actual Result:
+										{t("measure.actualResult")}
 									</span>
 									<Badge variant="secondary" className="text-sm px-3 py-1">
 										{mm.toFixed(2)} mm
@@ -79,7 +79,7 @@ function Measure() {
 								</div>
 								<div className="flex items-center justify-between">
 									<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-										Rounded Result:
+										{t("measure.roundedResult")}
 									</span>
 									<Badge variant="default" className="text-sm px-3 py-1">
 										{roundedMm} mm
@@ -92,14 +92,14 @@ function Measure() {
 
 						<div className="space-y-2">
 							<Label htmlFor="millimeters" className="text-sm font-medium">
-								Millimeters
+								{t("measure.millimeters")}
 							</Label>
 							<Input
 								id="millimeters"
 								type="number"
 								value={millimeters}
 								onChange={(e) => setMillimeters(e.target.value)}
-								placeholder="e.g., 318.5"
+								placeholder={t("measure.placeholderMm")}
 								className="text-center text-lg"
 								min="0"
 								step="0.01"
@@ -110,7 +110,7 @@ function Measure() {
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
 									<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-										Actual Result:
+										{t("measure.actualResult")}
 									</span>
 									<Badge variant="secondary" className="text-sm px-3 py-1">
 										{inchesFromMm.toFixed(4)} in
@@ -118,7 +118,7 @@ function Measure() {
 								</div>
 								<div className="flex items-center justify-between">
 									<span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-										Rounded Result:
+										{t("measure.roundedResult")}
 									</span>
 									<Badge variant="default" className="text-sm px-3 py-1">
 										{roundedInches} in

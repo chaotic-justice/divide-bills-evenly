@@ -1,0 +1,60 @@
+{
+	"measure": {
+		"title": "单位转换器",
+		"description": "精准转换英寸和毫米",
+		"cardTitle": "英寸转毫米",
+		"cardDescription": "输入英寸值以查看转换结果",
+		"inches": "英寸",
+		"millimeters": "毫米",
+		"placeholderInches": "例如：12.5",
+		"placeholderMm": "例如：318.5",
+		"actualResult": "实际结果：",
+		"roundedResult": "舍入结果："
+	},
+	"common": {
+		"language": "语言",
+		"home": "首页",
+		"measure": "测量",
+		"loading": "加载中...",
+		"noResults": "暂无结果",
+		"reset": "重置"
+	},
+	"counter": {
+		"title": "现金计数器",
+		"formDescription": "输入每个面额的钞票数量。",
+		"totalAmount": "总金额",
+		"submit": "分成 3 堆",
+		"noResultsDescription": "输入数值并提交以查看可能的分配或减法组合。",
+		"targetLabel": "要扣除的目标金额",
+		"allowedDenomLabel": "允许扣除的面额",
+		"mathWork": "数学计算",
+		"imperfectWarning": "总金额无法被 3 整除，或者没有足够的钞票可以均匀分配到 3 堆中。请按以下建议进行调整。",
+		"newTotal": "新总额：",
+		"stackCount_one": "{{count}} 堆",
+		"stackCount_other": "{{count}} 堆",
+		"stackTitle": "第 {{index}} 堆",
+		"billCount_one": "共 {{count}} 张钞票",
+		"billCount_other": "共 {{count}} 张钞票",
+		"billsLabel": "${{denom}} 面额：",
+		"noBills": "无钞票",
+		"errors": {
+			"negativeTarget": "目标金额不能为负数",
+			"targetExceedsHalf": "目标金额不能超过总额的一半",
+			"fetchPerfectFailed": "获取完美分配失败",
+			"fetchImperfectFailed": "获取非完美分配失败",
+			"mathWorkRequired": "需要进行数学计算"
+		},
+		"combos": {
+			"removing": "扣除 {{parts}}。",
+			"part": "{{count}} 张 ${{denom}} 面额"
+		}
+	},
+	"error": {
+		"notFound": "页面未找到",
+		"notFoundDescription": "您访问的页面不存在。",
+		"goHome": "返回首页",
+		"goBack": "返回",
+		"tryAgain": "重试",
+		"startOver": "重新开始"
+	}
+}

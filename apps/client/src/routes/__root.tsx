@@ -1,3 +1,4 @@
+import "@/lib/i18n";
 import { Header } from "@/components/commons/header";
 import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
 import { NotFound } from "@/components/NotFound";
@@ -80,9 +81,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="min-h-screen p-4 font-sans antialiased bg-background md:p-8">
-				<Header />
-				<main className="flex-1">{children}</main>
+			<body className="min-h-screen font-sans antialiased bg-background">
+				<div className="flex flex-col min-h-screen p-4 md:p-8">
+					<Header />
+					<main className="flex-1">{children}</main>
+				</div>
 				<Toaster richColors />
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-left" />

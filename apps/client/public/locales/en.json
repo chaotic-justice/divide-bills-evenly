@@ -1,0 +1,60 @@
+{
+	"measure": {
+		"title": "Unit Converter",
+		"description": "Convert inches to millimeters with precision",
+		"cardTitle": "Inches to Millimeters",
+		"cardDescription": "Enter a value in inches to see the conversion",
+		"inches": "Inches",
+		"millimeters": "Millimeters",
+		"placeholderInches": "e.g., 12.5",
+		"placeholderMm": "e.g., 318.5",
+		"actualResult": "Actual Result:",
+		"roundedResult": "Rounded Result:"
+	},
+	"common": {
+		"language": "Language",
+		"home": "Home",
+		"measure": "Measure",
+		"loading": "Loading...",
+		"noResults": "No results",
+		"reset": "Reset"
+	},
+	"counter": {
+		"title": "Cash Counter",
+		"formDescription": "Enter the number of bills for each denomination.",
+		"totalAmount": "Total Amount",
+		"submit": "Split into 3 stacks",
+		"noResultsDescription": "Enter values and submit to see possible splits or subtraction combos.",
+		"targetLabel": "Target amount to subtract",
+		"allowedDenomLabel": "Allowed denominations for subtraction",
+		"mathWork": "Math Work",
+		"imperfectWarning": "The total amount cannot be divided evenly by 3, or there are not enough bills available to distribute evenly into 3 stacks. Please adjust as suggested below.",
+		"newTotal": "New Total:",
+		"stackCount_one": "{{count}} Stack",
+		"stackCount_other": "{{count}} Stacks",
+		"stackTitle": "Stack #{{index}}",
+		"billCount_one": "{{count}} bill total",
+		"billCount_other": "{{count}} bills total",
+		"billsLabel": "${{denom}} bills:",
+		"noBills": "No bills",
+		"errors": {
+			"negativeTarget": "Target cannot be negative",
+			"targetExceedsHalf": "Target cannot exceed half the total",
+			"fetchPerfectFailed": "Failed to fetch perfect distribution",
+			"fetchImperfectFailed": "Failed to fetch imperfect distribution",
+			"mathWorkRequired": "Math work required"
+		},
+		"combos": {
+			"removing": "Removing {{parts}}.",
+			"part": "{{count}} bills of ${{denom}}"
+		}
+	},
+	"error": {
+		"notFound": "Page Not Found",
+		"notFoundDescription": "The page you are looking for does not exist.",
+		"goHome": "Go Home",
+		"goBack": "Go Back",
+		"tryAgain": "Try Again",
+		"startOver": "Start Over"
+	}
+}

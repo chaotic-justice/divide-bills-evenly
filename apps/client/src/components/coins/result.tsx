@@ -9,7 +9,9 @@ import type { DistributionResult } from "@/lib/algo";
 import type { StackStats, SubtractionCombo } from "@/types/api";
 import { DollarSign } from "lucide-react";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Label } from "../ui/label";
+
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface BillCounterResultsProps {
@@ -27,6 +29,8 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 	selectedComboIdx,
 	onSelectedComboChange,
 }) => {
+	const { t } = useTranslation();
+
 	// Memoize computed combo descriptions to avoid recalculation on every render
 	const comboDescriptions = useMemo(() => {
 		return (
@@ -34,13 +38,13 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 				const parts: string[] = [];
 				if (combo.combination) {
 					for (const [bill, qty] of Object.entries(combo.combination)) {
-						parts.push(`${qty} bills of ${bill}`);
+						parts.push(t("counter.combos.part", { count: qty, denom: bill }));
 					}
 				}
-				return `Removing ${parts.join(", ")}.`;
+				return t("counter.combos.removing", { parts: parts.join(", ") });
 			}) || []
 		);
-	}, [subtractionCombos]);
+	}, [subtractionCombos, t]);
 
 	const stacks = 3;
 	const hasNoDistribution =
@@ -53,7 +57,7 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 			<CardHeader>
 				<CardTitle className="flex items-center gap-2">
 					<DollarSign className="w-5 h-5" />
-					Math Work
+					{t("counter.mathWork")}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -66,9 +70,7 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 								<CardHeader>
 									<CardTitle className="flex items-center justify-between text-lg">
 										<span className="text-muted-foreground">
-											The total amount cannot be divided evenly by 3, or there
-											are not enough bills available to distribute evenly into 3
-											stacks. Please adjust as suggested below.
+											{t("counter.imperfectWarning")}
 										</span>
 									</CardTitle>
 								</CardHeader>
@@ -100,13 +102,13 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 						<div className="space-y-4">
 							<div className="flex items-center gap-2">
 								<h6 className="font-semibold">
-									New Total:{" "}
+									{t("counter.newTotal")}{" "}
 									{subtractionCombos
 										? subtractionCombos[selectedComboIdx]?.newTotal
 										: billsMath?.totalAmount}
 								</h6>
 								<span className="text-sm text-muted-foreground">
-									({stacks} {stacks > 1 ? "Stacks" : "Stack"})
+									({t("counter.stackCount", { count: stacks })})
 								</span>
 							</div>
 
@@ -131,6 +133,7 @@ interface StackCardProps {
 }
 
 const StackCard: React.FC<StackCardProps> = ({ stack }) => {
+	const { t } = useTranslation();
 	const denominations = [100, 50, 20, 10, 5] as const;
 	const billsToShow = denominations.filter(
 		(denom) => stack.distribution[denom] > 0,
@@ -140,11 +143,11 @@ const StackCard: React.FC<StackCardProps> = ({ stack }) => {
 		<Card className="shadow-md">
 			<CardHeader className="pb-3">
 				<CardTitle className="flex items-center justify-between text-lg">
-					<span>Stack #{stack.index}</span>
+					<span>{t("counter.stackTitle", { index: stack.index })}</span>
 					<span className="text-success">${stack.value.toLocaleString()}</span>
 				</CardTitle>
 				<CardDescription>
-					{stack.billCount} {stack.billCount === 1 ? "bill" : "bills"} total
+					{t("counter.billCount", { count: stack.billCount })}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-2">
@@ -152,13 +155,15 @@ const StackCard: React.FC<StackCardProps> = ({ stack }) => {
 					{billsToShow.length > 0 ? (
 						billsToShow.map((denom) => (
 							<div key={denom} className="flex items-center justify-between">
-								<span className="text-muted-foreground">${denom} bills:</span>
+								<span className="text-muted-foreground">
+									{t("counter.billsLabel", { denom })}
+								</span>
 								<span className="font-medium">{stack.distribution[denom]}</span>
 							</div>
 						))
 					) : (
 						<div className="py-2 text-center text-muted-foreground">
-							No bills
+							{t("counter.noBills")}
 						</div>
 					)}
 				</div>

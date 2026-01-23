@@ -33,6 +33,7 @@ import React, {
 	useTransition,
 } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useDebounceCallback } from "usehooks-ts";
 
 /**
@@ -47,6 +48,7 @@ interface ResultsState {
 }
 
 const BillCounter: React.FC = () => {
+	const { t } = useTranslation();
 	// useTransition for pending state
 	const [isPending, startTransition] = useTransition();
 
@@ -106,14 +108,14 @@ const BillCounter: React.FC = () => {
 		if (targetAmount < 0) {
 			form.setError("targetAmount", {
 				type: "manual",
-				message: "Target cannot be negative",
+				message: t("counter.errors.negativeTarget"),
 			});
 			return;
 		}
 		if (targetAmount > total / 2) {
 			form.setError("targetAmount", {
 				type: "manual",
-				message: "Target cannot exceed half the total",
+				message: t("counter.errors.targetExceedsHalf"),
 			});
 			return;
 		}
@@ -151,7 +153,7 @@ const BillCounter: React.FC = () => {
 					}));
 				});
 			} catch (error) {
-				toast.error("Failed to fetch perfect distribution");
+				toast.error(t("counter.errors.fetchPerfectFailed"));
 				console.error(error);
 			}
 		} else {
@@ -169,9 +171,9 @@ const BillCounter: React.FC = () => {
 						selectedComboIdx: 0, // Reset to first combo
 					}));
 				});
-				toast.warning("Math work required");
+				toast.warning(t("counter.errors.mathWorkRequired"));
 			} catch (error) {
-				toast.error("Failed to fetch imperfect distribution");
+				toast.error(t("counter.errors.fetchImperfectFailed"));
 				console.error(error);
 			}
 		}
@@ -226,7 +228,9 @@ const BillCounter: React.FC = () => {
 					<div className="p-2 rounded-lg bg-accent">
 						<Calculator className="w-6 h-6 text-accent-foreground" />
 					</div>
-					<h1 className="text-3xl font-bold text-balance">Cash Counter</h1>
+					<h1 className="text-3xl font-bold text-balance">
+						{t("counter.title")}
+					</h1>
 				</div>
 			</div>
 
@@ -237,7 +241,7 @@ const BillCounter: React.FC = () => {
 						<div className="flex items-center justify-between">
 							<div>
 								<CardDescription>
-									Enter the number of bills for each denomination.
+									{t("counter.formDescription")}
 								</CardDescription>
 							</div>
 							<Button
@@ -247,7 +251,7 @@ const BillCounter: React.FC = () => {
 								className="flex items-center gap-2"
 							>
 								<RotateCcw className="w-4 h-4" />
-								Reset
+								{t("common.reset")}
 							</Button>
 						</div>
 					</CardHeader>
@@ -262,7 +266,9 @@ const BillCounter: React.FC = () => {
 
 								{results && (
 									<div className="flex items-center justify-between p-4 border rounded-lg bg-primary/10">
-										<span className="text-lg font-semibold">Total Amount</span>
+										<span className="text-lg font-semibold">
+											{t("counter.totalAmount")}
+										</span>
 										<span className="text-2xl font-bold text-primary">
 											${results.total.toLocaleString()}
 										</span>
@@ -278,10 +284,10 @@ const BillCounter: React.FC = () => {
 										{isPending ? (
 											<>
 												<Spinner className="inline-block mr-2" />
-												Loading...
+												{t("common.loading")}
 											</>
 										) : (
-											"Split into 3 stacks"
+											t("counter.submit")
 										)}
 									</Button>
 								</div>
@@ -305,11 +311,10 @@ const BillCounter: React.FC = () => {
 							<CardContent className="pt-6">
 								<Empty>
 									<EmptyHeader>
-										<EmptyTitle>No results</EmptyTitle>
+										<EmptyTitle>{t("common.noResults")}</EmptyTitle>
 									</EmptyHeader>
 									<EmptyContent>
-										Enter values and submit to see possible splits or
-										subtraction combos.
+										{t("counter.noResultsDescription")}
 									</EmptyContent>
 								</Empty>
 							</CardContent>

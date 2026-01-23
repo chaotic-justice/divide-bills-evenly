@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { type BillCounterFormData } from "@/schemas/billCounter";
 import { Button } from "../ui/button";
 import { Minus, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface BillCounterFormProps {
 	form: UseFormReturn<BillCounterFormData>;
@@ -114,6 +115,8 @@ const DenominationInput: React.FC<DenominationInputProps> = ({
  * Form component for bill counter with denomination selection and subtraction options
  */
 const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
+	const { t } = useTranslation();
+
 	return (
 		<>
 			{BILL_DENOMINATIONS.map((denom) => (
@@ -123,7 +126,9 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 					name={denom.field}
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className="text-base">{denom.label}</FormLabel>
+							<FormLabel className="text-base">
+								{t("counter.billsLabel", { denom: denom.value })}
+							</FormLabel>
 							<FormControl>
 								<DenominationInput
 									denom={denom}
@@ -139,7 +144,7 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 
 			{/* Imperfect options: target amount and allowed denominations */}
 			<FormItem>
-				<FormLabel className="text-base">Target amount to subtract</FormLabel>
+				<FormLabel className="text-base">{t("counter.targetLabel")}</FormLabel>
 				<FormField
 					control={form.control}
 					name={"targetAmount" as const}
@@ -170,7 +175,7 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 
 			<FormItem>
 				<FormLabel className="text-base">
-					Allowed denominations for subtraction
+					{t("counter.allowedDenomLabel")}
 				</FormLabel>
 				<div className="grid gap-2">
 					{BILL_DENOMINATIONS.map((denom) => (
@@ -192,7 +197,9 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 												}
 												className="w-4 h-4"
 											/>
-											<span className="text-sm">{denom.label}</span>
+											<span className="text-sm">
+												{t("counter.billsLabel", { denom: denom.value })}
+											</span>
 										</label>
 									</FormControl>
 								</FormItem>

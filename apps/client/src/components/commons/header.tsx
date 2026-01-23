@@ -3,12 +3,15 @@ import { Link } from "@tanstack/react-router";
 import { SquareMenuIcon, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { LanguageSwitcher } from "../LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
+	const { t } = useTranslation();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const links = [
-		{ to: "/", label: "Home" },
-		{ to: "/measure", label: "Measure" },
+		{ to: "/", label: t("common.home", "Home") },
+		{ to: "/measure", label: t("common.measure", "Measure") },
 	];
 
 	return (
@@ -60,8 +63,7 @@ export function Header() {
 
 				{/* Right section */}
 				<div className="items-center justify-end flex-1 hidden md:flex gap-x-6">
-					{/* <HeaderLinks /> */}
-					{/* <ThemedButton /> */}
+					<LanguageSwitcher />
 				</div>
 
 				{/* Mobile menu Button */}
@@ -129,7 +131,7 @@ export function Header() {
 									<div className="flex items-center justify-between gap-x-5">
 										{/* <HeaderLinks /> */}
 										<div className="flex items-center justify-end gap-x-5">
-											{/* <ThemedButton /> */}
+											<LanguageSwitcher />
 										</div>
 									</div>
 								</div>
