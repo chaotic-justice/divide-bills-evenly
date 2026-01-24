@@ -16,11 +16,17 @@ i18n
 				detector.init({
 					order: ["localStorage", "cookie", "htmlTag", "path", "subdomain"],
 					caches: ["localStorage"],
+					cookieOptions: {
+						path: "/",
+						sameSite: "lax",
+						secure: true,
+						maxAge: 365 * 24 * 60 * 60,
+					},
 				});
 				const lng = detector.detect();
-				callback(lng || "en");
+				callback(lng || "zh");
 			} else {
-				callback("en");
+				callback("zh");
 			}
 		},
 		init: () => {
@@ -40,7 +46,7 @@ i18n
 				translation: zh,
 			},
 		},
-		fallbackLng: "en",
+		fallbackLng: "zh",
 		debug: false,
 		interpolation: {
 			escapeValue: false,

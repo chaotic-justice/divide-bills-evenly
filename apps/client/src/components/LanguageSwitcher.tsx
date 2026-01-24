@@ -15,7 +15,7 @@ export function LanguageSwitcher() {
 		<div className="flex items-center gap-2">
 			<Globe className="w-4 h-4 text-muted-foreground" />
 			<Select
-				value={i18n.language}
+				value={i18n.resolvedLanguage || "zh"}
 				onValueChange={(value) => i18n.changeLanguage(value)}
 			>
 				<SelectTrigger className="w-[120px] h-8 text-xs font-medium border-0 bg-transparent hover:bg-muted/50 transition-colors focus:ring-0">
