@@ -24,16 +24,18 @@ i18n
 					},
 				});
 				const lng = detector.detect();
-				callback(lng || "zh");
+				callback(lng || "en");
 			} else {
-				callback("zh");
+				callback("en");
 			}
 		},
 		init: () => {
 			/* init */
 		},
-		cacheUserLanguage: () => {
-			/* cacheUserLanguage */
+		cacheUserLanguage: (lng: string) => {
+			if (typeof window !== "undefined") {
+				localStorage.setItem("i18nextLng", lng);
+			}
 		},
 	})
 	.use(initReactI18next)
@@ -46,7 +48,7 @@ i18n
 				translation: zh,
 			},
 		},
-		fallbackLng: "zh",
+		fallbackLng: "en",
 		debug: false,
 		interpolation: {
 			escapeValue: false,
