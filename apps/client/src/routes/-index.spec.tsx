@@ -1,14 +1,14 @@
 // @ts-nocheck
 import {
+	act,
+	fireEvent,
 	render,
 	screen,
-	fireEvent,
 	waitFor,
-	act,
 } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Route } from "./index";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { StackStats, SubtractionStackStats } from "@/types/api";
+import { Route } from "./index";
 
 // Mock sonner toast - define toast object inline to avoid hoisting issues
 vi.mock("sonner", () => ({
@@ -25,7 +25,11 @@ vi.mock("usehooks-ts", () => ({
 }));
 
 // Get the component from the Route
-const BillCounter = Route.options.component!;
+const BillCounter = Route.options.component;
+
+if (!BillCounter) {
+	throw new Error("Route component is missing");
+}
 
 // Mock API responses
 const mockPerfectStackStats: StackStats[] = [

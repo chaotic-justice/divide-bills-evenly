@@ -2,9 +2,9 @@
 import { Link } from "@tanstack/react-router";
 import { SquareMenuIcon, X } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { LanguageSwitcher } from "../LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "../LanguageSwitcher";
+import { Button } from "../ui/button";
 
 export function Header() {
 	const { t } = useTranslation();

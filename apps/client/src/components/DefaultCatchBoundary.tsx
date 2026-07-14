@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import {
 	ErrorComponent,
 	Link,
@@ -5,7 +6,6 @@ import {
 	useMatch,
 	useRouter,
 } from "@tanstack/react-router";
-import type { ErrorComponentProps } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
@@ -23,6 +23,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 			<ErrorComponent error={error} />
 			<div className="flex gap-2 items-center flex-wrap">
 				<button
+					type="button"
 					onClick={() => {
 						router.invalidate();
 					}}

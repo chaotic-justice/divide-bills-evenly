@@ -1,18 +1,18 @@
-import React from "react";
-import { type UseFormReturn, type FieldPath } from "react-hook-form";
+import { Minus, Plus } from "lucide-react";
+import type React from "react";
+import type { FieldPath, UseFormReturn } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { type BillCounterFormData } from "@/schemas/billCounter";
+import type { BillCounterFormData } from "@/schemas/billCounter";
 import { Button } from "../ui/button";
-import { Minus, Plus } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 interface BillCounterFormProps {
 	form: UseFormReturn<BillCounterFormData>;
@@ -91,7 +91,7 @@ const DenominationInput: React.FC<DenominationInputProps> = ({
 				type="number"
 				min="0"
 				onFocus={(e) => e.currentTarget.select()}
-				onChange={(e) => onChange(parseInt(e.target.value) || 0)}
+				onChange={(e) => onChange(parseInt(e.target.value, 10) || 0)}
 				className="font-mono text-lg text-center"
 			/>
 			<Button
@@ -162,7 +162,7 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 										}
 									}}
 									onChange={(e) =>
-										field.onChange(parseInt(e.target.value) || 0)
+										field.onChange(parseInt(e.target.value, 10) || 0)
 									}
 									className="w-full"
 								/>
@@ -189,8 +189,12 @@ const BillCounterForm: React.FC<BillCounterFormProps> = ({ form }) => {
 							render={({ field }) => (
 								<FormItem className="flex items-center gap-3">
 									<FormControl>
-										<label className="inline-flex items-center gap-2">
+										<label
+											className="inline-flex items-center gap-2"
+											htmlFor={`allowed-${denom.field}`}
+										>
 											<Checkbox
+												id={`allowed-${denom.field}`}
 												checked={!!field.value}
 												onCheckedChange={(checked) =>
 													field.onChange(Boolean(checked))

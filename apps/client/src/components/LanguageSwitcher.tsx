@@ -1,3 +1,4 @@
+import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
 	Select,
@@ -6,7 +7,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "./ui/select";
-import { Globe } from "lucide-react";
 
 export function LanguageSwitcher() {
 	const { i18n } = useTranslation();

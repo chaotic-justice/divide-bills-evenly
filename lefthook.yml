@@ -1,12 +1,16 @@
 pre-commit:
+  commands:
+    biome:
+      glob: "*.{js,ts,jsx,tsx,json,css}"
+      run: bunx biome check --write --staged
+      stage_fixed: true
+
+pre-push:
   parallel: true
   commands:
-    lint:
-      glob: "*.{js,ts,jsx,tsx}"
-      exclude:
-        - "*.spec.tsx"
-        - "apps/client/vitest.setup.ts"
-      run: bun lint {staged_files} --verbose
-    format:
-      glob: "*.{js,ts,jsx,tsx}"
-      run: bun format {staged_files} && git add {staged_files}
+    deps:
+      glob: "{package.json,bun.lock}"
+      run: bun run lint:deps
+    typecheck:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: bun run typecheck:graph

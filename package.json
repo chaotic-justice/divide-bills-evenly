@@ -11,7 +11,9 @@
 		"build": "bun --filter \"*\" build",
 		"test": "bun --filter \"*\" test",
 		"lint": "bun --filter \"*\" lint",
-		"format": "bun --filter \"*\" format"
+		"format": "bun --filter \"*\" format",
+		"lint:deps": "bun install --frozen-lockfile --dry-run",
+		"typecheck:graph": "bunx tsc -b tsconfig.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.5",

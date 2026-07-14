@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { Ruler } from "lucide-react";
+import { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "../components/ui/badge";
 import {
 	Card,
@@ -11,7 +12,6 @@ import {
 } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/measure")({
 	component: Measure,
@@ -21,6 +21,8 @@ function Measure() {
 	const { t } = useTranslation();
 	const [inches, setInches] = useState("");
 	const [millimeters, setMillimeters] = useState("");
+	const inchesId = useId();
+	const millimetersId = useId();
 
 	const mm = inches ? parseFloat(inches) * 25.4 : 0;
 	const roundedMm = Math.round(mm);
@@ -52,11 +54,11 @@ function Measure() {
 					</CardHeader>
 					<CardContent className="space-y-6">
 						<div className="space-y-2">
-							<Label htmlFor="inches" className="text-sm font-medium">
+							<Label htmlFor={inchesId} className="text-sm font-medium">
 								{t("measure.inches")}
 							</Label>
 							<Input
-								id="inches"
+								id={inchesId}
 								type="number"
 								value={inches}
 								onChange={(e) => setInches(e.target.value)}
@@ -91,11 +93,11 @@ function Measure() {
 						<div className="border-t border-gray-200 dark:border-gray-700 my-6" />
 
 						<div className="space-y-2">
-							<Label htmlFor="millimeters" className="text-sm font-medium">
+							<Label htmlFor={millimetersId} className="text-sm font-medium">
 								{t("measure.millimeters")}
 							</Label>
 							<Input
-								id="millimeters"
+								id={millimetersId}
 								type="number"
 								value={millimeters}
 								onChange={(e) => setMillimeters(e.target.value)}

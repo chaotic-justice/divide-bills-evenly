@@ -1,3 +1,15 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Calculator, RotateCcw } from "lucide-react";
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+	useTransition,
+} from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { useDebounceCallback } from "usehooks-ts";
 import BillCounterForm from "@/components/coins/form";
 import BillCounterResults from "@/components/coins/result";
 import { Button } from "@/components/ui/button";
@@ -23,18 +35,6 @@ import { useBillCounter } from "@/lib/useBillCounter";
 import { deepEqual } from "@/lib/utils";
 import type { BillCounterFormData } from "@/schemas/billCounter";
 import type { StackStats, SubtractionStackStats } from "@/types/api";
-import { createFileRoute } from "@tanstack/react-router";
-import { Calculator, RotateCcw } from "lucide-react";
-import React, {
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-	useTransition,
-} from "react";
-import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
-import { useDebounceCallback } from "usehooks-ts";
 
 /**
  * Results state consolidated into a single object to reduce prop drilling

@@ -1,9 +1,4 @@
 import "@/lib/i18n";
-import { Header } from "@/components/commons/header";
-import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
-import { NotFound } from "@/components/NotFound";
-import { Toaster } from "@/components/ui/sonner";
-import { seo } from "@/lib/seo";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -13,6 +8,11 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Header } from "@/components/commons/header";
+import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
+import { NotFound } from "@/components/NotFound";
+import { Toaster } from "@/components/ui/sonner";
+import { seo } from "@/lib/seo";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -76,7 +76,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html>
+		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>

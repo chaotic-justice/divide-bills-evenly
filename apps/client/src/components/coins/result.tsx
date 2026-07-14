@@ -1,3 +1,7 @@
+import { DollarSign } from "lucide-react";
+import type React from "react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
 	Card,
 	CardContent,
@@ -7,9 +11,6 @@ import {
 } from "@/components/ui/card";
 import type { DistributionResult } from "@/lib/algo";
 import type { StackStats, SubtractionCombo } from "@/types/api";
-import { DollarSign } from "lucide-react";
-import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { Label } from "../ui/label";
 
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -78,16 +79,21 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 									<div className="flex items-center justify-between">
 										<RadioGroup
 											value={selectedComboIdx.toString()}
-											onValueChange={(v) => onSelectedComboChange(parseInt(v))}
+											onValueChange={(v) =>
+												onSelectedComboChange(parseInt(v, 10))
+											}
 										>
-											{subtractionCombos.map((_, idx) => (
-												<div key={idx} className="flex items-center gap-3">
+											{subtractionCombos.map((combo, comboIdx) => (
+												<div
+													key={`${combo.newTotal}-${combo.amountSubtracted}`}
+													className="flex items-center gap-3"
+												>
 													<RadioGroupItem
-														value={idx.toString()}
-														id={`combo-${idx}`}
+														value={comboIdx.toString()}
+														id={`combo-${comboIdx}`}
 													/>
-													<Label htmlFor={`combo-${idx}`}>
-														{comboDescriptions[idx] || "Empty Label"}
+													<Label htmlFor={`combo-${comboIdx}`}>
+														{comboDescriptions[comboIdx] || "Empty Label"}
 													</Label>
 												</div>
 											))}

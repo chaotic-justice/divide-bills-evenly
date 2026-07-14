@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { api } from "@/lib/api";
 import { billCounterSchema } from "@/schemas/billCounter";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/api/bills/imperfect")({
 	server: {
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/bills/imperfect")({
 					});
 				} catch (error) {
 					return new Response(
-						JSON.stringify({ error: "Failed to fetch: " + error }),
+						JSON.stringify({ error: `Failed to fetch: ${error}` }),
 						{
 							status: 500,
 							headers: { "Content-Type": "application/json" },
