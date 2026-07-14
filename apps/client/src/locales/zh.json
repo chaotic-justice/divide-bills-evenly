@@ -22,6 +22,7 @@
 	"counter": {
 		"title": "现金计数器",
 		"formDescription": "输入每个面额的钞票数量。",
+		"inputs": "输入",
 		"totalAmount": "总金额",
 		"submit": "分成 3 堆",
 		"noResultsDescription": "输入数值并提交以查看可能的分配或减法组合。",

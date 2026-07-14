@@ -56,60 +56,59 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 	const hasResults = stackStats && stackStats.length > 0;
 
 	return (
-		<Card className="shadow-lg">
-			<CardHeader>
+		<Card className="shadow-sm">
+			<CardHeader className="pb-4">
 				<CardTitle className="flex items-center gap-2">
 					<DollarSign className="w-5 h-5" />
 					{t("counter.mathWork")}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="space-y-4">
-					{/* Warning card when distribution is not perfect */}
+				<div className="space-y-5">
 					{hasNoDistribution &&
 						subtractionCombos &&
 						subtractionCombos.length > 0 && (
-							<Card className="shadow-md border-warning">
-								<CardHeader>
-									<CardTitle className="flex items-center justify-between text-lg">
-										<span className="text-muted-foreground">
-											{t("counter.imperfectWarning")}
-										</span>
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="flex items-center justify-between">
-										<RadioGroup
-											value={selectedComboIdx.toString()}
-											onValueChange={(v) =>
-												onSelectedComboChange(parseInt(v, 10))
-											}
-										>
+							<div className="rounded-lg border border-warning/40 bg-warning/10 p-4">
+								<p className="text-sm font-medium text-foreground">
+									{t("counter.imperfectWarning")}
+								</p>
+								<div className="mt-4">
+									<RadioGroup
+										value={selectedComboIdx.toString()}
+										onValueChange={(v) => {
+											onSelectedComboChange(parseInt(v, 10));
+										}}
+									>
+										<div className="grid gap-3">
 											{subtractionCombos.map((combo, comboIdx) => (
 												<div
 													key={`${combo.newTotal}-${combo.amountSubtracted}`}
-													className="flex items-center gap-3"
+													className="flex items-start gap-3 rounded-md border bg-background px-3 py-2"
 												>
 													<RadioGroupItem
 														value={comboIdx.toString()}
 														id={`combo-${comboIdx}`}
+														className="mt-0.5"
 													/>
-													<Label htmlFor={`combo-${comboIdx}`}>
+													<Label
+														htmlFor={`combo-${comboIdx}`}
+														className="text-sm leading-6"
+													>
 														{comboDescriptions[comboIdx] || "Empty Label"}
 													</Label>
 												</div>
 											))}
-										</RadioGroup>
-									</div>
-								</CardContent>
-							</Card>
+										</div>
+									</RadioGroup>
+								</div>
+							</div>
 						)}
 
 					{/* Results display */}
 					{hasResults && (
 						<div className="space-y-4">
 							<div className="flex items-center gap-2">
-								<h6 className="font-semibold">
+								<h6 className="text-sm font-medium text-muted-foreground">
 									{t("counter.newTotal")}{" "}
 									{subtractionCombos
 										? subtractionCombos[selectedComboIdx]?.newTotal
@@ -120,7 +119,7 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 								</span>
 							</div>
 
-							<div className="grid gap-4 md:grid-cols-2">
+							<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
 								{stackStats.map((stack) => (
 									<StackCard key={stack.index} stack={stack} />
 								))}
@@ -147,11 +146,13 @@ const StackCard: React.FC<StackCardProps> = ({ stack }) => {
 	);
 
 	return (
-		<Card className="shadow-md">
+		<Card className="shadow-sm">
 			<CardHeader className="pb-3">
-				<CardTitle className="flex items-center justify-between text-lg">
+				<CardTitle className="flex items-center justify-between text-base">
 					<span>{t("counter.stackTitle", { index: stack.index })}</span>
-					<span className="text-success">${stack.value.toLocaleString()}</span>
+					<span className="tabular-nums text-success">
+						${stack.value.toLocaleString()}
+					</span>
 				</CardTitle>
 				<CardDescription>
 					{t("counter.billCount", { count: stack.billCount })}

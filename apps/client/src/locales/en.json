@@ -22,6 +22,7 @@
 	"counter": {
 		"title": "Cash Counter",
 		"formDescription": "Enter the number of bills for each denomination.",
+		"inputs": "Inputs",
 		"totalAmount": "Total Amount",
 		"submit": "Split into 3 stacks",
 		"noResultsDescription": "Enter values and submit to see possible splits or subtraction combos.",

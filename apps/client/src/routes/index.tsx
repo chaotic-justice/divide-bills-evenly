@@ -13,12 +13,7 @@ import { useDebounceCallback } from "usehooks-ts";
 import BillCounterForm from "@/components/coins/form";
 import BillCounterResults from "@/components/coins/result";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
 	Empty,
 	EmptyContent,
@@ -222,27 +217,23 @@ const BillCounter: React.FC = () => {
 	);
 
 	return (
-		<div className="max-w-4xl mx-auto space-y-8">
-			<div className="space-y-2 text-center">
-				<div className="flex items-center justify-center gap-2 mb-4">
-					<div className="p-2 rounded-lg bg-accent">
-						<Calculator className="w-6 h-6 text-accent-foreground" />
-					</div>
-					<h1 className="text-3xl font-bold text-balance">
-						{t("counter.title")}
-					</h1>
-				</div>
+		<div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+			<div className="space-y-2">
+				<h1 className="text-2xl font-semibold text-balance sm:text-3xl">
+					{t("counter.title")}
+				</h1>
+				<p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+					{t("counter.formDescription")}
+				</p>
 			</div>
 
-			<div className="grid gap-8 lg:grid-cols-2">
-				{/* Form Section */}
-				<Card className="shadow-lg">
-					<CardHeader>
-						<div className="flex items-center justify-between">
-							<div>
-								<CardDescription>
-									{t("counter.formDescription")}
-								</CardDescription>
+			<div className="space-y-6">
+				<Card className="shadow-sm">
+					<CardHeader className="pb-4">
+						<div className="flex items-center justify-between gap-4">
+							<div className="flex items-center gap-2 text-sm text-muted-foreground">
+								<Calculator className="h-4 w-4" />
+								<span>{t("counter.inputs")}</span>
 							</div>
 							<Button
 								type="button"
@@ -250,7 +241,7 @@ const BillCounter: React.FC = () => {
 								onClick={handleReset}
 								className="flex items-center gap-2"
 							>
-								<RotateCcw className="w-4 h-4" />
+								<RotateCcw className="h-4 w-4" />
 								{t("common.reset")}
 							</Button>
 						</div>
@@ -265,11 +256,11 @@ const BillCounter: React.FC = () => {
 								<BillCounterForm form={form} />
 
 								{results && (
-									<div className="flex items-center justify-between p-4 border rounded-lg bg-primary/10">
-										<span className="text-lg font-semibold">
+									<div className="flex items-center justify-between rounded-lg border bg-primary/5 px-4 py-3">
+										<span className="text-sm font-medium text-muted-foreground">
 											{t("counter.totalAmount")}
 										</span>
-										<span className="text-2xl font-bold text-primary">
+										<span className="text-xl font-semibold text-primary tabular-nums">
 											${results.total.toLocaleString()}
 										</span>
 									</div>
@@ -283,7 +274,7 @@ const BillCounter: React.FC = () => {
 									>
 										{isPending ? (
 											<>
-												<Spinner className="inline-block mr-2" />
+												<Spinner className="mr-2 inline-block" />
 												{t("common.loading")}
 											</>
 										) : (
@@ -296,31 +287,24 @@ const BillCounter: React.FC = () => {
 					</CardContent>
 				</Card>
 
-				{/* Results Section */}
-				<div className="space-y-6">
-					{resultsState.showResults && hasResults ? (
-						<BillCounterResults
-							stackStats={resultsState.stackStats}
-							billsMath={resultsState.billsMath}
-							subtractionCombos={resultsState.subtractionCombos}
-							selectedComboIdx={resultsState.selectedComboIdx}
-							onSelectedComboChange={handleSelectedComboChange}
-						/>
-					) : (
-						<Card className="shadow-lg">
-							<CardContent className="pt-6">
-								<Empty>
-									<EmptyHeader>
-										<EmptyTitle>{t("common.noResults")}</EmptyTitle>
-									</EmptyHeader>
-									<EmptyContent>
-										{t("counter.noResultsDescription")}
-									</EmptyContent>
-								</Empty>
-							</CardContent>
-						</Card>
-					)}
-				</div>
+				{resultsState.showResults && hasResults ? (
+					<BillCounterResults
+						stackStats={resultsState.stackStats}
+						billsMath={resultsState.billsMath}
+						subtractionCombos={resultsState.subtractionCombos}
+						selectedComboIdx={resultsState.selectedComboIdx}
+						onSelectedComboChange={handleSelectedComboChange}
+					/>
+				) : (
+					<div className="rounded-xl border border-dashed bg-card px-6 py-8">
+						<Empty>
+							<EmptyHeader>
+								<EmptyTitle>{t("common.noResults")}</EmptyTitle>
+							</EmptyHeader>
+							<EmptyContent>{t("counter.noResultsDescription")}</EmptyContent>
+						</Empty>
+					</div>
+				)}
 			</div>
 		</div>
 	);
