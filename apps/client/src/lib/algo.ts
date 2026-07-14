@@ -28,19 +28,6 @@ export interface DistributionResult {
 }
 
 /**
- * Helper function to count bills in a stack
- */
-export function countBillsInStack(stack: number[]): BillCount {
-	return {
-		five: stack.filter((denom) => denom === 5).length,
-		ten: stack.filter((denom) => denom === 10).length,
-		twenty: stack.filter((denom) => denom === 20).length,
-		fifty: stack.filter((denom) => denom === 50).length,
-		hundred: stack.filter((denom) => denom === 100).length,
-	};
-}
-
-/**
  * Alternative: DP-based solution for more complex cases
  * This handles edge cases better than greedy algorithm
  */
@@ -73,13 +60,15 @@ export function canDistributeBillsEvenlyDP(
 	// If we need to subtract an amount first, try to find a subset of bills that sums to subtractAmount
 	if (subtractAmount > 0) {
 		// Filter bills to only include allowed denominations for subtraction
-		const allowedIndices = allBills
-			.map((denom, idx) => {
-				const denomStr = denom.toString() as keyof AllowedDenominations;
-				const isAllowed = allowedDenominations?.[denomStr] ?? true; // default to true if allowedDenominations not provided
-				return isAllowed ? idx : -1;
-			})
-			.filter((idx) => idx !== -1);
+		const allowedIndices: number[] = [];
+		for (let idx = 0; idx < allBills.length; idx++) {
+			const denom = allBills[idx];
+			const denomStr = denom.toString() as keyof AllowedDenominations;
+			const isAllowed = allowedDenominations?.[denomStr] ?? true; // default to true if allowedDenominations not provided
+			if (isAllowed) {
+				allowedIndices.push(idx);
+			}
+		}
 
 		const subtractSubset = findSubsetSumWithAllowed(
 			allBills,

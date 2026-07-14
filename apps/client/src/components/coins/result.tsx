@@ -15,6 +15,8 @@ import { Label } from "../ui/label";
 
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
+const DENOMINATIONS = [100, 50, 20, 10, 5] as const;
+
 interface BillCounterResultsProps {
 	stackStats: readonly StackStats[] | null;
 	billsMath: DistributionResult | null;
@@ -140,8 +142,7 @@ interface StackCardProps {
 
 const StackCard: React.FC<StackCardProps> = ({ stack }) => {
 	const { t } = useTranslation();
-	const denominations = [100, 50, 20, 10, 5] as const;
-	const billsToShow = denominations.filter(
+	const billsToShow = DENOMINATIONS.filter(
 		(denom) => stack.distribution[denom] > 0,
 	);
 

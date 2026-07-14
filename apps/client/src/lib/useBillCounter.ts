@@ -14,6 +14,18 @@ const DENOMINATIONS = [
 	{ value: 5, label: "Fives", field: "5" as const },
 ];
 
+function calculateTotal(data: BillCounterFormData): BillCounterResult {
+	const breakdown = DENOMINATIONS.map((denom) => ({
+		denomination: denom.value,
+		count: data[denom.field],
+		subtotal: data[denom.field] * denom.value,
+	}));
+
+	const total = breakdown.reduce((sum, item) => sum + item.subtotal, 0);
+
+	return { total, breakdown };
+}
+
 export const useBillCounter = () => {
 	const form = useForm<BillCounterFormData>({
 		resolver: zodResolver(billCounterSchema),
@@ -35,18 +47,6 @@ export const useBillCounter = () => {
 			},
 		},
 	});
-
-	const calculateTotal = (data: BillCounterFormData): BillCounterResult => {
-		const breakdown = DENOMINATIONS.map((denom) => ({
-			denomination: denom.value,
-			count: data[denom.field],
-			subtotal: data[denom.field] * denom.value,
-		}));
-
-		const total = breakdown.reduce((sum, item) => sum + item.subtotal, 0);
-
-		return { total, breakdown };
-	};
 
 	const resetForm = () => {
 		form.reset({
