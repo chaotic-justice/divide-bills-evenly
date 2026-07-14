@@ -1,0 +1,35 @@
+{
+	"name": "pumpkin-tree-contracts",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"main": "./src/index.ts",
+	"module": "./src/index.ts",
+	"types": "./dist-types/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist-types/index.d.ts",
+			"default": "./src/index.ts"
+		},
+		"./bill-counter": {
+			"types": "./dist-types/bill-counter.d.ts",
+			"default": "./src/bill-counter.ts"
+		},
+		"./bills": {
+			"types": "./dist-types/bills.d.ts",
+			"default": "./src/bills.ts"
+		}
+	},
+	"scripts": {
+		"build": "bunx tsc -b tsconfig.build.json",
+		"lint": "bunx biome lint ./src",
+		"format": "bunx biome format --write ./src",
+		"format:check": "bunx biome format ./src",
+		"lint:fix": "bunx biome lint --fix ./src",
+		"check": "bunx biome check ./src",
+		"check:ci": "bunx biome ci ./src"
+	},
+	"dependencies": {
+		"zod": "^4.3.5"
+	}
+}

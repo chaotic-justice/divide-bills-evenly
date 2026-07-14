@@ -7,25 +7,26 @@
 		"./types": "./src/index.ts"
 	},
 	"scripts": {
-		"lint": "biome lint ./src",
-		"format": "biome format --write ./src",
-		"format:check": "biome format ./src",
-		"lint:fix": "biome lint --fix ./src",
-		"check": "biome check --apply ./src",
-		"check:ci": "biome ci ./src",
+		"lint": "bunx biome lint ./src",
+		"format": "bunx biome format --write ./src",
+		"format:check": "bunx biome format ./src",
+		"lint:fix": "bunx biome lint --fix ./src",
+		"check": "bunx biome check --apply ./src",
+		"check:ci": "bunx biome ci ./src",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "bun run --watch src/index.ts",
-		"dev:worker": "wrangler dev",
-		"build": "wrangler deploy --dry-run --outdir=dist",
+		"dev:worker": "bunx wrangler dev",
+		"build": "bunx wrangler deploy --dry-run --outdir=dist",
 		"build:local": "bun build ./src/index.ts --outdir ./dist --target node",
-		"deploy": "wrangler deploy",
-		"deploy:staging": "wrangler deploy --env=staging",
-		"deploy:production": "wrangler deploy --env=production"
+		"deploy": "bunx wrangler deploy",
+		"deploy:staging": "bunx wrangler deploy --env=staging",
+		"deploy:production": "bunx wrangler deploy --env=production"
 	},
 	"dependencies": {
 		"@elysiajs/cors": "^1.4.0",
 		"@elysiajs/openapi": "^1.4.11",
-		"elysia": "latest"
+		"elysia": "1.4.22",
+		"pumpkin-tree-contracts": "workspace:*"
 	},
 	"devDependencies": {
 		"bun-types": "latest"

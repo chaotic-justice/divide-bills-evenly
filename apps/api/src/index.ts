@@ -8,7 +8,7 @@ export type {
 	StackStats,
 	SubtractionCombo,
 	SubtractionStackStats,
-} from "./utils/bill-logic";
+} from "pumpkin-tree-contracts";
 
 const ALLOWED_ORIGINS = [
 	"http://localhost:5173",

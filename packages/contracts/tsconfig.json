@@ -1,0 +1,14 @@
+{
+	"extends": "../typescript-config/base.json",
+	"compilerOptions": {
+		"tsBuildInfoFile": "./.tsbuildinfo",
+		"incremental": true,
+		"composite": true,
+		"target": "ES2022",
+		"lib": ["ES2023"],
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
+	},
+	"include": ["src"]
+}

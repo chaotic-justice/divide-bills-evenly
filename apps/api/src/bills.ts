@@ -1,14 +1,13 @@
 import Elysia, { t } from "elysia";
 import {
-	type Bills,
 	computeStackStats,
 	parseBills,
 	optimizeBillSubtraction,
 	applySubtractionOptions,
 	distributeBills,
 	removeBillsToReachAmount,
-	type SubtractionStackStats,
 } from "./utils/bill-logic";
+import type { Bills, SubtractionStackStats } from "pumpkin-tree-contracts";
 
 const BillsBase = t.Object({
 	"5": t.Number({ minimum: 0 }),

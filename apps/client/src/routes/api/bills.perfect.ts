@@ -1,14 +1,24 @@
-import type { BillCounterFormData } from "@/schemas/billCounter";
-import { createFileRoute } from "@tanstack/react-router";
 import { api } from "@/lib/api";
+import { billCounterSchema } from "@/schemas/billCounter";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/api/bills/perfect")({
 	server: {
 		handlers: {
 			POST: async ({ request }) => {
-				const data = (await request.json()) as BillCounterFormData;
+				const parsed = billCounterSchema.safeParse(await request.json());
+				if (!parsed.success) {
+					return new Response(
+						JSON.stringify({ error: parsed.error.flatten() }),
+						{
+							status: 400,
+							headers: { "Content-Type": "application/json" },
+						},
+					);
+				}
+
 				try {
-					const response = await api.bills.perfect.post(data);
+					const response = await api.bills.perfect.post(parsed.data);
 
 					if (response.error) {
 						return new Response(JSON.stringify({ error: response.error }), {

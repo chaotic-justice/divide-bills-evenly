@@ -1,23 +1,9 @@
-type Bills = Record<number, number>;
-
-type StackStats = Readonly<{
-	index: number;
-	value: number;
-	billCount: number;
-	distribution: Bills;
-}>;
-
-export type SubtractionCombo = Readonly<{
-	newTotal: number;
-	amountSubtracted: number;
-	combination: Bills | null;
-	description: string;
-}>;
-
-type SubtractionStackStats = SubtractionCombo &
-	Readonly<{
-		stackStats: StackStats[];
-	}>;
+import type {
+	Bills,
+	StackStats,
+	SubtractionCombo,
+	SubtractionStackStats,
+} from "pumpkin-tree-contracts";
 
 type BodyInput = Readonly<{
 	"5": number;
@@ -572,4 +558,4 @@ export function computeStackStats(stacks: Bills[]): StackStats[] {
 	return stats;
 }
 
-export type { Bills, StackStats, SubtractionStackStats };
+export type { Bills, StackStats, SubtractionCombo, SubtractionStackStats };

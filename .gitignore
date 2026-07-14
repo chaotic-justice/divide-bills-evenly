@@ -28,6 +28,9 @@ out/
 .nuxt/
 .output/
 .vitepress/dist
+packages/contracts/dist-types/
+apps/api/src/*.js
+apps/api/src/**/*.js
 
 # Caches
 .cache/
@@ -36,7 +39,7 @@ out/
 .eslintcache
 .stylelintcache
 .fusebox/
-.tsbuildinfo
+*.tsbuildinfo
 .vite/
 svelte-kit/
 
