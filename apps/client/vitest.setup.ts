@@ -21,6 +21,20 @@ Object.defineProperty(window, "matchMedia", {
 	})),
 });
 
+const localStorageMock = {
+	getItem: vi.fn(),
+	setItem: vi.fn(),
+	removeItem: vi.fn(),
+	clear: vi.fn(),
+};
+
+Object.defineProperty(window, "localStorage", {
+	writable: true,
+	value: localStorageMock,
+});
+
+await import("./src/lib/i18n");
+
 // Mock ResizeObserver for Radix UI components
 class ResizeObserverMock {
 	observe() {}

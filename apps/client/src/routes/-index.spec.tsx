@@ -119,12 +119,11 @@ describe("BillCounter", () => {
 
 		it("should display form with denomination labels", () => {
 			render(<BillCounter />);
-			// Use getAllByText since there might be duplicates
-			expect(screen.getAllByText("$100 Bills").length).toBeGreaterThan(0);
-			expect(screen.getAllByText("$50 Bills").length).toBeGreaterThan(0);
-			expect(screen.getAllByText("$20 Bills").length).toBeGreaterThan(0);
-			expect(screen.getAllByText("$10 Bills").length).toBeGreaterThan(0);
-			expect(screen.getAllByText("$5 Bills").length).toBeGreaterThan(0);
+			expect(screen.getAllByText(/\$100 bills:/i).length).toBeGreaterThan(0);
+			expect(screen.getAllByText(/\$50 bills:/i).length).toBeGreaterThan(0);
+			expect(screen.getAllByText(/\$20 bills:/i).length).toBeGreaterThan(0);
+			expect(screen.getAllByText(/\$10 bills:/i).length).toBeGreaterThan(0);
+			expect(screen.getAllByText(/\$5 bills:/i).length).toBeGreaterThan(0);
 		});
 
 		it("should show Reset button", () => {
