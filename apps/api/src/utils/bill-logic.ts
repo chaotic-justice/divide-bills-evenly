@@ -108,7 +108,7 @@ export function findSubtractionOptions(
 			targetAmount <= totalValue &&
 			targetAmount % 3 === neededRemainder &&
 			canRemoveAmount(bills, targetAmount, allowedDenoms) &&
-			canAchievePerfectDistribution(bills, targetAmount)
+			canAchievePerfectDistribution(bills, targetAmount, allowedDenoms)
 		) {
 			return [targetAmount];
 		}
@@ -121,7 +121,7 @@ export function findSubtractionOptions(
 			if (
 				amt % 3 === neededRemainder &&
 				canRemoveAmount(bills, amt, allowedDenoms) &&
-				canAchievePerfectDistribution(bills, amt)
+				canAchievePerfectDistribution(bills, amt, allowedDenoms)
 			) {
 				results.push(amt);
 				break; // Found closest lower
@@ -133,7 +133,7 @@ export function findSubtractionOptions(
 			if (
 				amt % 3 === neededRemainder &&
 				canRemoveAmount(bills, amt, allowedDenoms) &&
-				canAchievePerfectDistribution(bills, amt)
+				canAchievePerfectDistribution(bills, amt, allowedDenoms)
 			) {
 				results.push(amt);
 				break; // Found closest upper
@@ -147,7 +147,7 @@ export function findSubtractionOptions(
 	let shouldSearch = remainder !== 0;
 
 	if (!shouldSearch) {
-		shouldSearch = !canAchievePerfectDistribution(bills, 0);
+		shouldSearch = !canAchievePerfectDistribution(bills, 0, allowedDenoms);
 	}
 
 	if (!shouldSearch) return [];
@@ -171,7 +171,7 @@ export function findSubtractionOptions(
 		if (amount > totalValue) continue;
 		if (
 			canRemoveAmount(bills, amount, allowedDenoms) &&
-			canAchievePerfectDistribution(bills, amount)
+			canAchievePerfectDistribution(bills, amount, allowedDenoms)
 		) {
 			validAmounts.push(amount);
 		}
@@ -183,7 +183,7 @@ export function findSubtractionOptions(
 		for (let amount = maxAmt + 1; amount < totalValue; amount++) {
 			if (
 				canRemoveAmount(bills, amount, allowedDenoms) &&
-				canAchievePerfectDistribution(bills, amount)
+				canAchievePerfectDistribution(bills, amount, allowedDenoms)
 			) {
 				validAmounts.push(amount);
 				if (validAmounts.length >= 5) break;
@@ -197,9 +197,25 @@ export function findSubtractionOptions(
 export function canAchievePerfectDistribution(
 	originalBills: Bills,
 	subtractionAmount: number,
+	allowedDenoms?: number[],
 ): boolean {
 	const bills = { ...originalBills };
-	const remainingBills = removeBillsToReachAmount(bills, subtractionAmount);
+	const combination = getRemovalCombination(
+		bills,
+		subtractionAmount,
+		allowedDenoms,
+	);
+
+	if (combination === null) {
+		return false;
+	}
+
+	const remainingBills = removeBillsToReachAmount(
+		bills,
+		subtractionAmount,
+		combination,
+		allowedDenoms,
+	);
 
 	let remainingValue = 0;
 	for (const [denom, count] of Object.entries(remainingBills)) {
@@ -457,6 +473,19 @@ export function removeBillsToReachAmount(
 }
 
 export function distributeBills(bills: Bills): Bills[] {
+	const totalValue = Object.entries(bills).reduce(
+		(sum, [denomination, count]) =>
+			sum + Number.parseInt(denomination, 10) * count,
+		0,
+	);
+
+	if (totalValue % 3 === 0) {
+		const exactDistribution = findExactDistribution(bills, totalValue / 3);
+		if (exactDistribution) {
+			return exactDistribution;
+		}
+	}
+
 	const allBills: number[] = [];
 	for (const [denomination, count] of Object.entries(bills)) {
 		const denom = Number.parseInt(denomination, 10);
@@ -498,6 +527,91 @@ export function distributeBills(bills: Bills): Bills[] {
 	}
 
 	return refineDistribution(stacks, stackValues);
+}
+
+function createEmptyStack(): Bills {
+	return { 5: 0, 10: 0, 20: 0, 50: 0, 100: 0 };
+}
+
+function findExactDistribution(bills: Bills, target: number): Bills[] | null {
+	if (target % 5 !== 0) {
+		return null;
+	}
+
+	const denominations = [100, 50, 20, 10, 5];
+	const activeDenominations = denominations.filter(
+		(denomination) => (bills[denomination] || 0) > 0,
+	);
+	const allocations = new Map<number, [number, number]>();
+	const failedStates = new Set<string>();
+
+	function solve(
+		index: number,
+		stackOneValue: number,
+		stackTwoValue: number,
+	): boolean {
+		if (stackOneValue > target || stackTwoValue > target) {
+			return false;
+		}
+
+		if (index === activeDenominations.length) {
+			return stackOneValue === target && stackTwoValue === target;
+		}
+
+		const minValue = Math.min(stackOneValue, stackTwoValue);
+		const maxValue = Math.max(stackOneValue, stackTwoValue);
+		const state = `${index}:${minValue}:${maxValue}`;
+		if (failedStates.has(state)) {
+			return false;
+		}
+
+		const denomination = activeDenominations[index];
+		const count = bills[denomination] || 0;
+
+		for (let stackOneCount = 0; stackOneCount <= count; stackOneCount++) {
+			const nextStackOneValue = stackOneValue + stackOneCount * denomination;
+			if (nextStackOneValue > target) {
+				break;
+			}
+
+			for (
+				let stackTwoCount = 0;
+				stackTwoCount <= count - stackOneCount;
+				stackTwoCount++
+			) {
+				const nextStackTwoValue = stackTwoValue + stackTwoCount * denomination;
+				if (nextStackTwoValue > target) {
+					break;
+				}
+
+				allocations.set(denomination, [stackOneCount, stackTwoCount]);
+				if (solve(index + 1, nextStackOneValue, nextStackTwoValue)) {
+					return true;
+				}
+			}
+		}
+
+		failedStates.add(state);
+		return false;
+	}
+
+	if (!solve(0, 0, 0)) {
+		return null;
+	}
+
+	const stacks = [createEmptyStack(), createEmptyStack(), createEmptyStack()];
+
+	for (const denomination of denominations) {
+		const count = bills[denomination] || 0;
+		const [stackOneCount, stackTwoCount] = allocations.get(denomination) || [
+			0, 0,
+		];
+		stacks[0][denomination] = stackOneCount;
+		stacks[1][denomination] = stackTwoCount;
+		stacks[2][denomination] = count - stackOneCount - stackTwoCount;
+	}
+
+	return stacks;
 }
 
 export function refineDistribution(
