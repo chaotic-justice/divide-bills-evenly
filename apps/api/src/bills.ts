@@ -64,10 +64,9 @@ export const bills = new Elysia({
 					const billsCopy: Bills = Object.fromEntries(
 						Object.entries(billCounts).map(([denom, count]) => [denom, count]),
 					);
-					const { newTotal: desiredTotal, combination: selectedCombination } =
-						option;
+					const { amountSubtracted, combination: selectedCombination } = option;
 					const { remainingBills: billsAfterRemoval } = applySubtractionOptions(
-						desiredTotal,
+						amountSubtracted,
 						selectedCombination,
 						billsCopy,
 						body.allowedDenominations,

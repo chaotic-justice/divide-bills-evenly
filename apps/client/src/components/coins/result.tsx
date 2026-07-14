@@ -33,11 +33,13 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 	onSelectedComboChange,
 }) => {
 	const { t } = useTranslation();
+	const safeSubtractionCombos: readonly SubtractionCombo[] | null =
+		Array.isArray(subtractionCombos) ? subtractionCombos : null;
 
 	// Memoize computed combo descriptions to avoid recalculation on every render
 	const comboDescriptions = useMemo(() => {
 		return (
-			subtractionCombos?.map((combo) => {
+			safeSubtractionCombos?.map((combo) => {
 				const parts: string[] = [];
 				if (combo.combination) {
 					for (const [bill, qty] of Object.entries(combo.combination)) {
@@ -47,7 +49,7 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 				return t("counter.combos.removing", { parts: parts.join(", ") });
 			}) || []
 		);
-	}, [subtractionCombos, t]);
+	}, [safeSubtractionCombos, t]);
 
 	const stacks = 3;
 	const hasNoDistribution =
@@ -66,8 +68,8 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 			<CardContent>
 				<div className="space-y-5">
 					{hasNoDistribution &&
-						subtractionCombos &&
-						subtractionCombos.length > 0 && (
+						safeSubtractionCombos &&
+						safeSubtractionCombos.length > 0 && (
 							<div className="rounded-lg border border-warning/40 bg-warning/10 p-4">
 								<p className="text-sm font-medium text-foreground">
 									{t("counter.imperfectWarning")}
@@ -80,7 +82,7 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 										}}
 									>
 										<div className="grid gap-3">
-											{subtractionCombos.map((combo, comboIdx) => (
+											{safeSubtractionCombos.map((combo, comboIdx) => (
 												<div
 													key={`${combo.newTotal}-${combo.amountSubtracted}`}
 													className="flex items-start gap-3 rounded-md border bg-background px-3 py-2"
@@ -110,8 +112,8 @@ const BillCounterResults: React.FC<BillCounterResultsProps> = ({
 							<div className="flex items-center gap-2">
 								<h6 className="text-sm font-medium text-muted-foreground">
 									{t("counter.newTotal")}{" "}
-									{subtractionCombos
-										? subtractionCombos[selectedComboIdx]?.newTotal
+									{safeSubtractionCombos
+										? safeSubtractionCombos?.[selectedComboIdx]?.newTotal
 										: billsMath?.totalAmount}
 								</h6>
 								<span className="text-sm text-muted-foreground">

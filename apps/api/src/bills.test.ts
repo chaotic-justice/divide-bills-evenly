@@ -64,4 +64,36 @@ describe("bills API", () => {
 		const suggestions = (await response.json()) as SubtractionStackStats[];
 		expect(suggestions).toEqual([]);
 	});
+
+	test("POST /bills/imperfect handles large valid subtraction inputs", async () => {
+		const response = await postBills("/bills/imperfect", {
+			"5": 2,
+			"10": 29,
+			"20": 288,
+			"50": 25,
+			"100": 61,
+			targetAmount: 120,
+			allowedDenominations: {
+				"5": true,
+				"10": true,
+				"20": true,
+				"50": false,
+				"100": false,
+			},
+		});
+
+		expect(response.status).toBe(200);
+
+		const suggestions = (await response.json()) as SubtractionStackStats[];
+		expect(suggestions).toHaveLength(1);
+		expect(suggestions[0].amountSubtracted).toBe(120);
+		expect(suggestions[0].newTotal).toBe(13_290);
+		expect(suggestions[0].combination).toEqual({ 20: 6 });
+		expect(suggestions[0].stackStats.map((stack) => stack.value)).toEqual([
+			4430, 4430, 4430,
+		]);
+		expect(suggestions[0].stackStats.map((stack) => stack.billCount)).toEqual([
+			133, 133, 133,
+		]);
+	});
 });

@@ -225,7 +225,11 @@ export function canAchievePerfectDistribution(
 	if (remainingValue % 3 !== 0) return false;
 
 	const targetPerStack = Math.floor(remainingValue / 3);
-	return canDistributePerfectly(remainingBills, targetPerStack);
+	return (
+		findExactDistribution(remainingBills, targetPerStack, {
+			preferBalancedBillCounts: false,
+		}) !== null
+	);
 }
 
 export function canDistributePerfectly(bills: Bills, target: number): boolean {
@@ -408,11 +412,11 @@ export function optimizeBillSubtraction(
 }
 
 export function applySubtractionOptions(
-	desiredTotal: number,
+	amountSubtracted: number,
 	selectedCombination: Bills | null,
 	bills: Bills,
 	allowedDenominationMap?: Record<string, boolean>,
-): { remainingBills: Bills; desiredTotal: number } {
+): { remainingBills: Bills; amountSubtracted: number } {
 	let allowedDenoms: number[] | undefined;
 	if (allowedDenominationMap) {
 		allowedDenoms = Object.entries(allowedDenominationMap)
@@ -423,11 +427,11 @@ export function applySubtractionOptions(
 
 	const remainingBills = removeBillsToReachAmount(
 		{ ...bills },
-		desiredTotal,
+		amountSubtracted,
 		selectedCombination,
 		allowedDenoms,
 	);
-	return { remainingBills, desiredTotal };
+	return { remainingBills, amountSubtracted };
 }
 
 export function removeBillsToReachAmount(
@@ -480,7 +484,9 @@ export function distributeBills(bills: Bills): Bills[] {
 	);
 
 	if (totalValue % 3 === 0) {
-		const exactDistribution = findExactDistribution(bills, totalValue / 3);
+		const exactDistribution = findExactDistribution(bills, totalValue / 3, {
+			preferBalancedBillCounts: true,
+		});
 		if (exactDistribution) {
 			return exactDistribution;
 		}
@@ -533,9 +539,190 @@ function createEmptyStack(): Bills {
 	return { 5: 0, 10: 0, 20: 0, 50: 0, 100: 0 };
 }
 
-function findExactDistribution(bills: Bills, target: number): Bills[] | null {
+function subtractCombination(bills: Bills, combination: Bills): Bills {
+	const remaining = { ...bills };
+	for (const [denomination, count] of Object.entries(combination)) {
+		const denom = Number.parseInt(denomination, 10);
+		remaining[denom] = (remaining[denom] || 0) - count;
+	}
+	return remaining;
+}
+
+function buildStackFromCombination(combination: Bills | null): Bills | null {
+	if (combination === null) {
+		return null;
+	}
+
+	return {
+		...createEmptyStack(),
+		...combination,
+	};
+}
+
+function countBills(bills: Bills): number {
+	return Object.values(bills).reduce((sum, count) => sum + count, 0);
+}
+
+type StackCombination = Readonly<{
+	bills: Bills;
+	billCount: number;
+}>;
+
+function findStackCombinations(
+	bills: Bills,
+	target: number,
+): StackCombination[] {
+	const denominations = [100, 50, 20, 10, 5];
+	const combinations: StackCombination[] = [];
+	const current = createEmptyStack();
+
+	function find(index: number, remainingAmount: number, billCount: number) {
+		if (index === denominations.length) {
+			if (remainingAmount === 0) {
+				combinations.push({ bills: { ...current }, billCount });
+			}
+			return;
+		}
+
+		const denomination = denominations[index];
+		const maxCount = Math.min(
+			bills[denomination] || 0,
+			Math.floor(remainingAmount / denomination),
+		);
+
+		for (let count = 0; count <= maxCount; count++) {
+			current[denomination] = count;
+			find(
+				index + 1,
+				remainingAmount - count * denomination,
+				billCount + count,
+			);
+		}
+		current[denomination] = 0;
+	}
+
+	find(0, target, 0);
+	return combinations;
+}
+
+function canUseTogether(
+	firstStack: Bills,
+	secondStack: Bills,
+	availableBills: Bills,
+): boolean {
+	for (const denomination of [100, 50, 20, 10, 5]) {
+		if (
+			(firstStack[denomination] || 0) + (secondStack[denomination] || 0) >
+			(availableBills[denomination] || 0)
+		) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function getBillCountRange(counts: number[]): number {
+	return Math.max(...counts) - Math.min(...counts);
+}
+
+function findBalancedExactDistribution(
+	bills: Bills,
+	target: number,
+): Bills[] | null {
+	const combinations = findStackCombinations(bills, target);
+	const totalBillCount = countBills(bills);
+	const idealBillCount = totalBillCount / 3;
+	let best: Readonly<{
+		firstStack: Bills;
+		secondStack: Bills;
+		range: number;
+		counts: number[];
+	}> | null = null;
+
+	const sortedCombinations = combinations.sort(
+		(a, b) =>
+			Math.abs(a.billCount - idealBillCount) -
+			Math.abs(b.billCount - idealBillCount),
+	);
+
+	for (const first of sortedCombinations) {
+		if (best && Math.abs(first.billCount - idealBillCount) > best.range) {
+			break;
+		}
+
+		for (const second of sortedCombinations) {
+			const thirdBillCount =
+				totalBillCount - first.billCount - second.billCount;
+			const counts = [first.billCount, second.billCount, thirdBillCount];
+			const range = getBillCountRange(counts);
+
+			if (best && range >= best.range) {
+				continue;
+			}
+
+			if (canUseTogether(first.bills, second.bills, bills)) {
+				best = {
+					firstStack: first.bills,
+					secondStack: second.bills,
+					range,
+					counts,
+				};
+
+				if (range === 0) {
+					break;
+				}
+			}
+		}
+
+		if (best?.range === 0) {
+			break;
+		}
+	}
+
+	if (!best) {
+		return null;
+	}
+
+	const remainingAfterFirst = subtractCombination(bills, best.firstStack);
+	return [
+		best.firstStack,
+		best.secondStack,
+		subtractCombination(remainingAfterFirst, best.secondStack),
+	];
+}
+
+function findExactDistribution(
+	bills: Bills,
+	target: number,
+	options: { preferBalancedBillCounts?: boolean } = {},
+): Bills[] | null {
 	if (target % 5 !== 0) {
 		return null;
+	}
+
+	if (options.preferBalancedBillCounts) {
+		const balancedDistribution = findBalancedExactDistribution(bills, target);
+		if (balancedDistribution) {
+			return balancedDistribution;
+		}
+	}
+
+	const firstStack = buildStackFromCombination(
+		getRemovalCombination(bills, target),
+	);
+	if (firstStack !== null) {
+		const remainingAfterFirst = subtractCombination(bills, firstStack);
+		const secondStack = buildStackFromCombination(
+			getRemovalCombination(remainingAfterFirst, target),
+		);
+		if (secondStack !== null) {
+			return [
+				firstStack,
+				secondStack,
+				subtractCombination(remainingAfterFirst, secondStack),
+			];
+		}
 	}
 
 	const denominations = [100, 50, 20, 10, 5];

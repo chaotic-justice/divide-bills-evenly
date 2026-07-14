@@ -4,6 +4,7 @@ import type {
 	StackStats,
 	SubtractionStackStats,
 } from "pumpkin-tree-contracts";
+import { resolveApiUrl as resolveApiUrlWithBase } from "./api-url";
 
 type ApiResult<T> = Readonly<{
 	data: T | null;
@@ -11,12 +12,16 @@ type ApiResult<T> = Readonly<{
 	status: number;
 }>;
 
+export function resolveApiUrl(path: string): URL {
+	return resolveApiUrlWithBase(path, env.VITE_API_URL);
+}
+
 async function postJson<T>(
 	path: string,
 	body: BillCounterFormData,
 ): Promise<ApiResult<T>> {
 	try {
-		const response = await fetch(new URL(path, env.VITE_API_URL), {
+		const response = await fetch(resolveApiUrl(path), {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

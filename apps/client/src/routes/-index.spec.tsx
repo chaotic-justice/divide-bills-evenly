@@ -7,6 +7,7 @@ import {
 	waitFor,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import BillCounterResults from "@/components/coins/result";
 import type { StackStats, SubtractionStackStats } from "@/types/api";
 import { Route } from "./index";
 
@@ -304,12 +305,11 @@ describe("BillCounter", () => {
 			});
 
 			// Submit form by submitting the form element directly
-			const form = document.querySelector("form");
-			if (form) {
-				await act(async () => {
-					fireEvent.submit(form);
-				});
-			}
+			await act(async () => {
+				fireEvent.click(
+					screen.getByRole("button", { name: /split into 3 stacks/i }),
+				);
+			});
 
 			// Wait for fetch to be called or for component state to update
 			await waitFor(
@@ -354,6 +354,27 @@ describe("BillCounter", () => {
 				},
 				{ timeout: 3000 },
 			);
+		});
+
+		it("should not render non-array imperfect payloads as subtraction combos", () => {
+			expect(() =>
+				render(
+					<BillCounterResults
+						stackStats={mockPerfectStackStats}
+						billsMath={{
+							isDivisibleByThree: false,
+							canBeEvenlyDistributed: false,
+							totalAmount: 300,
+							totalBills: 6,
+						}}
+						subtractionCombos={{ error: "Upstream failed" }}
+						selectedComboIdx={0}
+						onSelectedComboChange={vi.fn()}
+					/>,
+				),
+			).not.toThrow();
+
+			expect(screen.getByText("Math Work")).toBeInTheDocument();
 		});
 	});
 

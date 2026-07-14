@@ -42,6 +42,15 @@ interface ResultsState {
 	selectedComboIdx: number;
 }
 
+function getResponseError(payload: unknown): string {
+	if (payload && typeof payload === "object" && "error" in payload) {
+		const error = (payload as { error: unknown }).error;
+		return typeof error === "string" ? error : JSON.stringify(error);
+	}
+
+	return "Request failed";
+}
+
 const BillCounter: React.FC = () => {
 	const { t } = useTranslation();
 	// useTransition for pending state
@@ -139,8 +148,13 @@ const BillCounter: React.FC = () => {
 				const perfectRes = await fetch("/api/bills/perfect", {
 					method: "POST",
 					body: JSON.stringify(data),
+					headers: { "Content-Type": "application/json" },
 				});
-				const res = await perfectRes.json();
+				const res: unknown = await perfectRes.json();
+				if (perfectRes.ok === false || !Array.isArray(res)) {
+					throw new Error(getResponseError(res));
+				}
+
 				startTransition(() => {
 					setResultsState((prev) => ({
 						...prev,
@@ -153,12 +167,16 @@ const BillCounter: React.FC = () => {
 			}
 		} else {
 			try {
-				const imperfectRes = await fetch("api/bills/imperfect", {
+				const imperfectRes = await fetch("/api/bills/imperfect", {
 					method: "POST",
 					body: JSON.stringify(data),
 					headers: { "Content-Type": "application/json" },
 				});
-				const res = await imperfectRes.json();
+				const res: unknown = await imperfectRes.json();
+				if (imperfectRes.ok === false || !Array.isArray(res)) {
+					throw new Error(getResponseError(res));
+				}
+
 				startTransition(() => {
 					setResultsState((prev) => ({
 						...prev,

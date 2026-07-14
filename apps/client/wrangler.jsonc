@@ -7,14 +7,23 @@
 	"observability": {
 		"enabled": true
 	},
+	"vars": {
+		"VITE_API_URL": "https://pumpkin-tree-api-prod.simpler-times.workers.dev"
+	},
 	"env": {
 		"staging": {
 			"main": "@tanstack/react-start/server-entry",
-			"name": "pumpkin-tree-client-staging"
+			"name": "pumpkin-tree-client-staging",
+			"vars": {
+				"VITE_API_URL": "https://pumpkin-tree-api-prod.simpler-times.workers.dev"
+			}
 		},
 		"production": {
 			"main": "@tanstack/react-start/server-entry",
-			"name": "pumpkin-tree-client-production"
+			"name": "pumpkin-tree-client-production",
+			"vars": {
+				"VITE_API_URL": "https://pumpkin-tree-api-prod.simpler-times.workers.dev"
+			}
 		}
 	}
 }
